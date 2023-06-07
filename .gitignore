@@ -1,3 +1,7 @@
+# TBE Specific ignores
+Bangladesh_level1/
+Dku_bluesky_analysis/
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
