@@ -5,39 +5,51 @@ import pandas as pd
 from tzlocal import get_localzone
 from typing import Optional, List
 
-# Function to read the inventory file
-def ebs_read_tbe(flin: str, flsource: str, tblselect: Optional[List[str]] = None):
+def ebs_read_tbe(flin: str):
     """
-    Read the inventory file.
+    Read a TBE file.
 
     Args:
-        flin: Path to the inventory file.
-        flsource: Path to the source directory.
-        tblselect: List of table names to select.
+        flin: Path to the TBE file.
 
     Returns:
-        A dictionary containing the result and error message (if any).
+        A dictionary containing dataframes for each table in the TBE file,
+        and a dictionary containing metadata.
     """
-    result = {}
-    error = None
+    tables = {}
+    tables['tb_sites'] = pd.DataFrame()
+    tables['tc_sites'] = pd.DataFrame()
+    metadata = {}
+    current_table = None
+    current_table_name = None
 
-    try:
-        tb = pd.read_csv(flin, keep_default_na=False)
-        tb_sites = tb.copy()
+    with open(flin, 'r') as f:
+        for line in f:
+            line = line.strip()
+            fields = line.split(',')
 
-        if tblselect:
-            tb_select = tb_sites[tb_sites['siteid'].isin(tblselect)].reset_index(drop=True)
-        else:
-            tb_select = tb_sites.copy()
+            if line.startswith('TBL'):
+                # Start a new table
+                current_table_name = fields[1]
+                current_table = pd.DataFrame(columns=fields[2:])
+            elif line.startswith('BGN'):
+                # Start of table data
+                pass
+            elif line.startswith('EOT'):
+                # End of table, convert to dataframe
+                if current_table is not None:
+                    tables[current_table_name] = current_table
+                current_table = None
+            elif line.startswith('ATT') or line.startswith('CMT'):
+                # Metadata
+                metadata[fields[0]] = fields[1:]
+            elif current_table is not None:
+                # Table data
+                row = pd.DataFrame([fields[:len(current_table.columns)]], columns=current_table.columns)
+                current_table = current_table.append(row, ignore_index=True)
 
-        result['tb'] = tb
-        result['tb_sites'] = tb_sites
-        result['tb_select'] = tb_select
+    return {'tables': tables, 'metadata': metadata}
 
-    except Exception as e:
-        error = str(e)
-
-    return {'result': result, 'error': error}
 
 def dks_uread_blueskyv2b():
     """
@@ -76,21 +88,22 @@ def dks_uread_blueskyv2b():
     #timemaxsct = pd.to_datetime('2023-02-15 00:00')
 
     # Input directory of data
-    indir = '/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis'
+    indir = '../Bangladesh_level1/'
 
-    indirsites = './Dku_bluesky_analysis'
-    flsites = 'saq_bluesky_npl_20220830_20230404_inv_tbe.csv'
-    flsites = 'saq_bluesky_dku_20210715_20230131_inv_tbe.csv'
-    flsites = 'saq_bluesky_bgd_20211001_20230430_inv_tbe.csv'
+    indirsites = '/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis/'
+
+    flsites = '/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis/saq_bluesky_npl_20220830_20230404_inv_tbe.csv'
+    flsites = '/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis/saq_bluesky_dku_20210715_20230131_inv_tbe.csv'
+    flsites = '/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv'
 
     # Read the inventory file
-    rtn = ebs_read_tbe(flin=flsites, flsource=indirsites, tblselect=None)
+    rtn = ebs_read_tbe(flin=flsites)
 
-    if rtn['error'] is None:
-        tb = rtn['result']['tb']
-        tc = rtn['result']['tc']
-        tb_sites = rtn['result']['tb_sites']
-        tc_sites = rtn['result']['tc_sites']
+    if 'error' not in rtn or rtn['error'] is None:
+        tb = rtn['tables']
+        tc = rtn['tables']
+        tb_sites = rtn['tables']['tb_sites']
+        tc_sites = rtn['tables']['tc_sites']
     else:
         raise ValueError(f"ebs_read_tbe read error: {rtn['error']}")
 
