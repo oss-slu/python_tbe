@@ -42,7 +42,7 @@ timeminsct <- ymd_hm('2021-10-01 00:00')
 ## Input directory of data:
 #indir = 'D:/cloud data for meeting/'
 #indir = 'C:/Users/bdefoy/Desktop/Dku_cloud_data/'
-indir = '../Dku_data_pull/Our\ Data/Bangladesh/'
+indir = '../Bangladesh_level1/'
 #indir = '/d/b/Aqs_saq/Data_tsiv2b/Nepal/'
 
 indirsites = ''
