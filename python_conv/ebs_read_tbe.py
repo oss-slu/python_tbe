@@ -55,11 +55,14 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
     # read and parse header column, read second column to fill in missing EOT:
     tf = pd.read_csv(flin, header=None, sep=',', usecols=[0, 1], keep_default_na=False)
     nrecs = len(tf)
-    print(tf)
+    print("tf: \n", tf)
     tf_codes = tf[0].str[:3]
+    print("tf_codes: \n", tf_codes)
     tf_description = tf[0].str[4:]
+    print("tf_description: \n", tf_description)
     itbl_header = tf_codes[tf_codes == 'TBL'].index
     ntables = len(itbl_header)
+    print("ntables \n", ntables)
 
     for ntbl in range(1, ntables + 1):
         iheader = itbl_header[ntbl - 1]
