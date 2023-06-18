@@ -5,51 +5,6 @@ import pandas as pd
 from tzlocal import get_localzone
 from typing import Optional, List
 
-def ebs_read_tbe(flin: str):
-    """
-    Read a TBE file.
-
-    Args:
-        flin: Path to the TBE file.
-
-    Returns:
-        A dictionary containing dataframes for each table in the TBE file,
-        and a dictionary containing metadata.
-    """
-    tables = {}
-    tables['tb_sites'] = pd.DataFrame()
-    tables['tc_sites'] = pd.DataFrame()
-    metadata = {}
-    current_table = None
-    current_table_name = None
-
-    with open(flin, 'r') as f:
-        for line in f:
-            line = line.strip()
-            fields = line.split(',')
-
-            if line.startswith('TBL'):
-                # Start a new table
-                current_table_name = fields[1]
-                current_table = pd.DataFrame(columns=fields[2:])
-            elif line.startswith('BGN'):
-                # Start of table data
-                pass
-            elif line.startswith('EOT'):
-                # End of table, convert to dataframe
-                if current_table is not None:
-                    tables[current_table_name] = current_table
-                current_table = None
-            elif line.startswith('ATT') or line.startswith('CMT'):
-                # Metadata
-                metadata[fields[0]] = fields[1:]
-            elif current_table is not None:
-                # Table data
-                row = pd.DataFrame([fields[:len(current_table.columns)]], columns=current_table.columns)
-                current_table = current_table.append(row, ignore_index=True)
-
-    return {'tables': tables, 'metadata': metadata}
-
 
 def dks_uread_blueskyv2b():
     """
