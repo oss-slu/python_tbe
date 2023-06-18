@@ -3,7 +3,9 @@ import re
 from tzlocal import get_localzone
 from pytz import all_timezones
 
-def ebs_read_tbe(flin='ebs_sites_20220125_tbe.csv', flsource='extdata', tblselect=None):
+from bdf_utils import get_attribute_check
+
+def ebs_read_tbe(flin='/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv', flsource='extdata', tblselect=None):
     """
     Read tbe file
 
@@ -28,7 +30,7 @@ def ebs_read_tbe(flin='ebs_sites_20220125_tbe.csv', flsource='extdata', tblselec
     n...: number of records/rows/attributes
 
     Parameters:
-    - flin: File name (default: 'ebs_sites_20220125_tbe.csv')
+    - flin: File name (default: '/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv')
     - flsource: Source: 'extdata' or directory (default: 'extdata')
     - tblselect: Null: Read all tables, or name of table to read
 
@@ -38,21 +40,22 @@ def ebs_read_tbe(flin='ebs_sites_20220125_tbe.csv', flsource='extdata', tblselec
 
     result = {}  # initialize output
 
-    if flsource == 'extdata':
-        flin_full = pkg_resources.resource_filename('Aqsebs', f'extdata/{flin}')
-        if not os.path.exists(flin_full):
-            return {'result': None, 'error': f'File not found: {flin}'}
-    else:
-        flin_full = os.path.join(flsource, flin)
+    # if flsource == 'extdata':
+    #     flin_full = pkg_resources.resource_filename('Aqsebs', f'extdata/{flin}')
+    #     if not os.path.exists(flin_full):
+    #         return {'result': None, 'error': f'File not found: {flin}'}
+    # else:
+    #     flin_full = os.path.join(flsource, flin)
 
-    if not os.path.isfile(flin_full):
-        return {'result': None, 'error': f'File not found: {flin_full}'}
-    else:
-        print(f'Will read file {flin_full}')
+    # if not os.path.isfile(flin_full):
+    #     return {'result': None, 'error': f'File not found: {flin_full}'}
+    # else:
+    #     print(f'Will read file {flin_full}')
 
     # read and parse header column, read second column to fill in missing EOT:
-    tf = pd.read_csv(flin_full, header=None, sep=',', usecols=[0, 1], keep_default_na=False)
+    tf = pd.read_csv(flin, header=None, sep=',', usecols=[0, 1], keep_default_na=False)
     nrecs = len(tf)
+    print(tf)
     tf_codes = tf[0].str[:3]
     tf_description = tf[0].str[4:]
     itbl_header = tf_codes[tf_codes == 'TBL'].index
@@ -112,7 +115,7 @@ def ebs_read_tbe(flin='ebs_sites_20220125_tbe.csv', flsource='extdata', tblselec
             ndata = iend - istart + 1
 
         # Read column names:
-        hdr_all = pd.read_csv(flin_full, header=None, sep=',', skiprows=iheader, nrows=1, keep_default_na=False)
+        hdr_all = pd.read_csv(flin, header=None, sep=',', skiprows=iheader, nrows=1, keep_default_na=False)
         tbl_name = hdr_all[0].str.replace('^TBL ', '')
         tbl_name = tbl_name.str.replace('\s', '_')
         hdr_select = hdr_all.columns[~hdr_all.isna().any()]
@@ -121,27 +124,42 @@ def ebs_read_tbe(flin='ebs_sites_20220125_tbe.csv', flsource='extdata', tblselec
         hdr_data = hdr_all[hdr_select].reset_index(drop=True)
 
         # Find and read metadata:
-        iatt = (tf_codes[(iheader + 1):(istart - 1)] == 'ATT').idxmax()
-        if pd.notnull(iatt):
-            iatt1 = iatt + iheader
-            iatt2 = iheader + (tf_codes[(iheader + 1):(istart - 1)] == 'ATT').last_valid_index()
-            natt = iatt2 - iatt1 + 1
-            att = pd.read_csv(flin_full, header=None, sep=',', skiprows=iatt1, nrows=natt, usecols=hdr_select,
-                              keep_default_na=False)
-            att.columns = hdr.iloc[0]
-            att = att.iloc[iatt - iatt1]
-            att.columns = hdr_data.iloc[0]
-            att_trans = att.transpose().reset_index()
-            att_trans.columns = att_trans.iloc[0]
-            att_trans = att_trans[1:]
-            att_trans.columns.values[0] = 'Variable'
+        itbl_sites = (tf_codes == 'TBL Sites').idxmax()
+        ibgn = (tf_codes == 'BGN').idxmax()
+
+        if pd.notnull(itbl_sites) and pd.notnull(ibgn):
+            iatt_start = itbl_sites + 1
+            iatt_end = ibgn - 1
+            att_indices = (tf_codes[iatt_start:iatt_end] == 'ATT')
+
+            if not att_indices.any():
+                print(f"No 'ATT' rows found between 'TBL Sites' and 'BGN' for table {ntbl}/{ntables}")
+                continue  # Skip to the next table
+
+            iatt = att_indices.idxmax()
         else:
-            print(f'No attributes found for Table {ntbl}/{ntables}')
-            att_trans = None
+            print(f"'TBL Sites' or 'BGN' row not found for table {ntbl}/{ntables}")
+            #continue  # Skip to the next table
+            if pd.notnull(iatt):
+                iatt1 = iatt + iheader
+                iatt2 = iheader + (tf_codes[(iheader + 1):(istart - 1)] == 'ATT').last_valid_index()
+                natt = iatt2 - iatt1 + 1
+                att = pd.read_csv(flin, header=None, sep=',', skiprows=iatt1, nrows=natt, usecols=hdr_select,
+                                keep_default_na=False)
+                att.columns = hdr.iloc[0]
+                att = att.iloc[iatt - iatt1]
+                att.columns = hdr_data.iloc[0]
+                att_trans = att.transpose().reset_index()
+                att_trans.columns = att_trans.iloc[0]
+                att_trans = att_trans[1:]
+                att_trans.columns.values[0] = 'Variable'
+            else:
+                print(f'No attributes found for Table {ntbl}/{ntables}')
+                att_trans = None
 
         # Read data:
         if ndata > 0:
-            tf_tbl = pd.read_csv(flin_full, header=None, sep=',', skiprows=istart, nrows=ndata, usecols=hdr_select,
+            tf_tbl = pd.read_csv(flin, header=None, sep=',', skiprows=istart, nrows=ndata, usecols=hdr_select,
                                  keep_default_na=False)
             tf_tbl_codes = tf_tbl[0].str[:3]
             icmt = tf_tbl_codes == 'CMT'
@@ -199,5 +217,6 @@ def ebs_read_tbe(flin='ebs_sites_20220125_tbe.csv', flsource='extdata', tblselec
         else:
             print(f'  Rows: header only at {iheader}, no data, no metadata')
 
-    print(f'Finished reading file: {flin_full}')
+    print(f'Finished reading file: {flin}')
     return {'result': result, 'error': None}
+ebs_read_tbe()

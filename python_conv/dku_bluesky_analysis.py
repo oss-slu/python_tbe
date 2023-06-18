@@ -5,6 +5,8 @@ import pandas as pd
 from tzlocal import get_localzone
 from typing import Optional, List
 
+from ebs_read_tbe import ebs_read_tbe
+
 
 def dks_uread_blueskyv2b():
     """
@@ -47,12 +49,13 @@ def dks_uread_blueskyv2b():
 
     indirsites = '/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis/'
 
-    flsites = '/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis/saq_bluesky_npl_20220830_20230404_inv_tbe.csv'
-    flsites = '/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis/saq_bluesky_dku_20210715_20230131_inv_tbe.csv'
+    #flsites = '/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis/saq_bluesky_npl_20220830_20230404_inv_tbe.csv'
+    #flsites = '/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis/saq_bluesky_dku_20210715_20230131_inv_tbe.csv'
     flsites = '/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv'
 
     # Read the inventory file
-    rtn = ebs_read_tbe(flin=flsites)
+    rtn = ebs_read_tbe(flin=flsites, flsource= '', tblselect= None)
+    print("Walrus: ", rtn)
 
     if 'error' not in rtn or rtn['error'] is None:
         tb = rtn['tables']

@@ -38,8 +38,8 @@ library(tidyverse)
 library(lubridate)
 library(data.table)
 
-ebs_read_tbe <- function(flin = 'ebs_sites_20220125_tbe.csv',
-                         flsource = 'extdata',
+ebs_read_tbe <- function(flin = 'saq_bluesky_bgd_20211001_20230430_inv_tbe.csv',
+                         flsource = '',
                          tblselect = NULL) {
   #flin <- 'site_meta.csv'
   #flsource <- './'
@@ -65,7 +65,7 @@ ebs_read_tbe <- function(flin = 'ebs_sites_20220125_tbe.csv',
 
   # read and parse header column, read second column to fill in missing EOT:
   tf <- fread(flin_full, header=FALSE, sep=',', select=c(1,2), fill=TRUE)
-
+  
   #itbl_header <- which(str_detect(a$V1,'^TBL'))
   nrecs <- length(tf$V1)
   tf_codes <- str_sub(tf$V1,1,3)
@@ -291,3 +291,4 @@ ebs_read_tbe <- function(flin = 'ebs_sites_20220125_tbe.csv',
   printf('Finished reading file: %s',flin_full)
   return( list(result=result, error=NULL) )
 }
+ebs_read_tbe()
