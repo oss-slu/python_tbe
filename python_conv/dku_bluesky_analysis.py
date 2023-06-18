@@ -51,7 +51,7 @@ def dks_uread_blueskyv2b():
 
     #flsites = '/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis/saq_bluesky_npl_20220830_20230404_inv_tbe.csv'
     #flsites = '/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis/saq_bluesky_dku_20210715_20230131_inv_tbe.csv'
-    flsites = '/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv'
+    flsites = './Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv'
 
     # Read the inventory file
     rtn = ebs_read_tbe(flin=flsites, flsource= '', tblselect= None)

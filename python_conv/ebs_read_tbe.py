@@ -5,7 +5,7 @@ from pytz import all_timezones
 
 from bdf_utils import get_attribute_check
 
-def ebs_read_tbe(flin='/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv', flsource='extdata', tblselect=None):
+def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv', flsource='extdata', tblselect=None):
     """
     Read tbe file
 
