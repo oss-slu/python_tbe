@@ -9,33 +9,49 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
     """
     Read tbe file
 
-    By default: All table names will be converted to lower case
-    "Timeseries" table will load into tb (data) and tc (metadata)
-    Other tables will load into eg. tb_sites and tc_sites
-
-    Returns a dictionary "result" containing data dataframes (tc_...) and associated metadata (tc_...) or an error message
-
-    Variable name conventions:
-    Prefixes:
-    tf: table read using pandas read_csv
-    tf_tbl: single table read
-    tb: dataframe of data
-    tc: dataframe of metadata
-
-    hdr: header variables
-    att: attribute variables (aka metadata)
-    cmt: comments
-
-    i...: index of row in the file
-    n...: number of records/rows/attributes
-
     Parameters:
-    - flin: File name (default: '/Users/stuart/Desktop/python_tbe/Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv')
-    - flsource: Source: 'extdata' or directory (default: 'extdata')
+    - flin: File name 
+    - flsource: Source: 'extdata' or directory 
     - tblselect: Null: Read all tables, or name of table to read
 
     Returns:
     - result: Dictionary of dataframes with tables and metadata, error: Error Message
+
+    Variable Descriptions:
+    - tf: Temporary dataframe used to store the CSV data.
+    - tf_codes: Stores the first three characters of the first column in the CSV.
+    - tf_description: Stores the rest of the content in the first column after the first three characters.
+    - itbl_header: Indices where tables start (i.e., where 'TBL' is found).
+    - ntables: Number of tables in the CSV.
+    - iheader: Index of the current table header.
+    - tbl_str: Table name in lowercase.
+    - ilast: Last possible row in the current table.
+    - ieot: Index of 'EOT' in the current table.
+    - iend: Index of the end of data in the current table.
+    - istart: Index of the start of data in the current table.
+    - ndata: Number of data rows in the current table.
+    - hdr_all: All column headers in the current table.
+    - tbl_name: Current table name.
+    - hdr_select: Column indices that have headers (non-empty).
+    - hdr: Selected column headers for the current table.
+    - hdr_data: Data column headers for the current table.
+    - itbl_sites: Index of 'TBL Sites'.
+    - ibgn: Index of 'BGN'.
+    - iatt_start: Index to start searching for 'ATT'-prefixed rows.
+    - iatt_end: Index to end searching for 'ATT'-prefixed rows.
+    - att_indices: Boolean series where True indicates the row starts with 'ATT'.
+    - iatt: Index of the first 'ATT'-prefixed row.
+    - iatt1: Adjusted index of the first 'ATT'-prefixed row considering the header.
+    - iatt2: Adjusted index of the last 'ATT'-prefixed row considering the header.
+    - natt: Number of 'ATT'-prefixed rows.
+    - att: Metadata (i.e., 'ATT'-prefixed rows) of the current table.
+    - att_trans: Transposed version of att.
+    - tf_tbl: Data of the current table.
+    - tf_tbl_codes: First three characters of tf_tbl's first column.
+    - icmt: Boolean series where True indicates the row is a comment.
+    - ncmt: Number of comment rows.
+    - tb_gbl: Transposed version of tf_tbl if the current table is 'global'.
+    - result: Final output containing all tables and corresponding metadata.
     """
 
     result = {}  # initialize output
@@ -55,7 +71,7 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
     # read and parse header column, read second column to fill in missing EOT:
     tf = pd.read_csv(flin, header=None, sep=',', usecols=[0, 1], keep_default_na=False)
     nrecs = len(tf)
-    print("tf: \n", tf)
+    print("tf: ", tf)
     tf_codes = tf[0].str[:3]
     print("tf_codes: \n", tf_codes)
     tf_description = tf[0].str[4:]
@@ -128,12 +144,16 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
 
         # Find and read metadata:
         itbl_sites = (tf_codes == 'TBL Sites').idxmax()
-        ibgn = (tf_codes == 'BGN').idxmax()
+        print("itbl_sites: ", itbl_sites)
+        ibgn = (tf_codes[itbl_sites:] == 'BGN').idxmax()  # Adjusted to find 'BGN' after 'TBL Sites'
 
         if pd.notnull(itbl_sites) and pd.notnull(ibgn):
             iatt_start = itbl_sites + 1
             iatt_end = ibgn - 1
-            att_indices = (tf_codes[iatt_start:iatt_end] == 'ATT')
+            print("iatt_start: ", iatt_start)
+            print("iatt_end: ", iatt_end)
+            print("tf_codes[iatt_start:iatt_end]: ",tf_codes[iatt_start:iatt_end] )
+            att_indices = tf_codes[iatt_start:iatt_end].str.startswith('ATT')  # Adjusted to find rows starting with 'ATT'
 
             if not att_indices.any():
                 print(f"No 'ATT' rows found between 'TBL Sites' and 'BGN' for table {ntbl}/{ntables}")
