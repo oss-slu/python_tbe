@@ -143,9 +143,10 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
         hdr_data = hdr_all[hdr_select].reset_index(drop=True)
 
         # Find and read metadata:
-        itbl_sites = (tf_codes == 'TBL Sites').idxmax()
+        itbl_sites = (tf[0] == 'TBL Sites').idxmax()
         print("itbl_sites: ", itbl_sites)
-        ibgn = (tf_codes[itbl_sites:] == 'BGN').idxmax()  # Adjusted to find 'BGN' after 'TBL Sites'
+        ibgn = (tf[0][itbl_sites:] == 'BGN').idxmax()  # Adjusted to find 'BGN' after 'TBL Sites'
+
 
         if pd.notnull(itbl_sites) and pd.notnull(ibgn):
             iatt_start = itbl_sites + 1
