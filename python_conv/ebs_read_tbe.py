@@ -82,6 +82,7 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
     print("ntables \n", ntables)
 
     for ntbl in range(1, ntables + 1):
+        att_trans = None
         iheader = itbl_header[ntbl - 1]
         tbl_str = tf_description[iheader].lower()
         if tblselect is not None and tbl_str != tblselect.lower():
@@ -243,5 +244,6 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
             print(f'  Rows: header only at {iheader}, no data, no metadata')
 
     print(f'Finished reading file: {flin}')
+    print('return: ',result)
     return {'result': result, 'error': None}
 ebs_read_tbe()
