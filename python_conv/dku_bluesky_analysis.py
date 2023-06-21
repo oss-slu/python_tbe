@@ -56,16 +56,20 @@ def dks_uread_blueskyv2b():
     # Read the inventory file
     rtn = ebs_read_tbe(flin=flsites, flsource= '', tblselect= None)
     print("Walrus: ", rtn)
+    # rtn has two keys: 'result' and 'error'
+    # rtn['result'] has keys global, tc_global, tc_sites, sites
+    # rtn['error'] is None if no error
     print()
     # iterate through the dictionary
-    for key, value in rtn.items():
-        print("key:", key,"value: ", value)
+    for key, value in rtn['result'].items():
+        print("key:", key)
+
 
     if 'error' not in rtn or rtn['error'] is None:
-        tb = rtn['tables']
-        tc = rtn['tables']
-        tb_sites = rtn['tables']['tb_sites']
-        tc_sites = rtn['tables']['tc_sites']
+            tb = rtn['result']
+            tc = rtn['result']
+            tb_sites = rtn['result']['tb_sites']
+            tc_sites = rtn['result']['tc_sites']
     else:
         raise ValueError(f"ebs_read_tbe read error: {rtn['error']}")
 
