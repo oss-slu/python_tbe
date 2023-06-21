@@ -5,8 +5,7 @@ from pytz import all_timezones
 
 from bdf_utils import get_attribute_check
 
-def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv', flsource='extdata', tblselect=None):
-    """
+"""
     Read tbe file
 
     Parameters:
@@ -53,6 +52,8 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
     - tb_gbl: Transposed version of tf_tbl if the current table is 'global'.
     - result: Final output containing all tables and corresponding metadata.
     """
+
+def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv', flsource='extdata', tblselect=None):
 
     result = {}  # initialize output
 
@@ -192,7 +193,7 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
                 print(f'Removing {ncmt} comments from table {tbl_str}')
                 tf_tbl = tf_tbl[~icmt]
             tf_tbl.drop(columns=0, inplace=True)
-            tf_tbl.columns = hdr_data.iloc[0]
+            tf_tbl.columns = hdr_data.columns[:len(tf_tbl.columns)]
             # reset timezones for all dates:
             for col in tf_tbl.columns:
                 rtn = get_attribute_check(att_trans, col, 'Units')
