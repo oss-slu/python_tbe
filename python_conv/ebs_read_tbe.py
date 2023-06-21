@@ -220,19 +220,23 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
         else:
             tf_tbl = None
 
+        
         # Add data to result:
         if tf_tbl is None:
+            print(f"Data for table {tbl_str} is None")
             result[tbl_str] = None
         elif tbl_str.lower() == 'global':
             tb_gbl = tf_tbl.transpose().reset_index()
             result[tbl_str] = tb_gbl.rename(columns={0: 'Variable'})
         else:
             result[tbl_str] = tf_tbl
-
         if att_trans is None:
+            print(f"Metadata for table {tbl_str} is None")
             result['tc_' + tbl_str] = None
         else:
             result['tc_' + tbl_str] = att_trans
+        print(f'Added tables {tbl_str} and tc_{tbl_str} to the result dictionary')
+
 
         # Summary message:
         print(f'Tables {tbl_str} and tc_{tbl_str} for table {ntbl}/{ntables}: {tf_description[iheader]}')
@@ -246,3 +250,4 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
     print(f'Finished reading file: {flin}')
     print('return: ',result)
     return {'result': result, 'error': None}
+ebs_read_tbe()

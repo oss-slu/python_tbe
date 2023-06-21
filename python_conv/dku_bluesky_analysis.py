@@ -64,14 +64,16 @@ def dks_uread_blueskyv2b():
     for key, value in rtn['result'].items():
         print("key:", key)
 
-
     if 'error' not in rtn or rtn['error'] is None:
-            tb = rtn['result']
-            tc = rtn['result']
-            tb_sites = rtn['result']['tb_sites']
-            tc_sites = rtn['result']['tc_sites']
+        tb = rtn['result']
+        tc = rtn['result']
+        tb_sites = rtn['result'].get('tb_sites')  # .get() will return None if 'tb_sites' doesn't exist
+        tc_sites = rtn['result'].get('tc_sites')  # same for 'tc_sites'
+        if tb_sites is None or tc_sites is None:
+            print("Warning: tb_sites or tc_sites not found in the input file.")
     else:
         raise ValueError(f"ebs_read_tbe read error: {rtn['error']}")
+
 
     tb_select = tb_sites[tb_sites['siteid'].isin(asites)].reset_index(drop=True)
     aserial = tb_select['serial_number']
