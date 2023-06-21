@@ -56,6 +56,10 @@ def dks_uread_blueskyv2b():
     # Read the inventory file
     rtn = ebs_read_tbe(flin=flsites, flsource= '', tblselect= None)
     print("Walrus: ", rtn)
+    print()
+    # iterate through the dictionary
+    for key, value in rtn.items():
+        print("key:", key,"value: ", value)
 
     if 'error' not in rtn or rtn['error'] is None:
         tb = rtn['tables']
