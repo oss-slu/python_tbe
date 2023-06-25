@@ -250,4 +250,3 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
     print(f'Finished reading file: {flin}')
     print('return: ',result)
     return {'result': result, 'error': None}
-ebs_read_tbe()
