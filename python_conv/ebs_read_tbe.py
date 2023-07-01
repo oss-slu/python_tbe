@@ -187,6 +187,7 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
         if ndata > 0:
             tf_tbl = pd.read_csv(flin, header=None, sep=',', skiprows=istart, nrows=ndata, usecols=hdr_select,
                                  keep_default_na=False)
+            print("THIS IS TF_TBL: ", tf_tbl)
             tf_tbl_codes = tf_tbl[0].str[:3]
             icmt = tf_tbl_codes == 'CMT'
             ncmt = icmt.sum()
@@ -249,4 +250,10 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
 
     print(f'Finished reading file: {flin}')
     print('return: ',result)
+    print('')
+    print('**************** END OF EBS_READ_TBE *************')
+    print(f'************************************************** \n\n')
     return {'result': result, 'error': None}
+
+if (__name__ == "__main__"):
+    ebs_read_tbe()

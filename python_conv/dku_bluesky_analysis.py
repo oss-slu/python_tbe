@@ -88,8 +88,7 @@ def dks_uread_blueskyv2b():
     else:
         raise ValueError(f"ebs_read_tbe read error: {rtn['error']}")
 
-
-    tb_select = tb_sites[tb_sites['siteid'].isin(asites)].reset_index(drop=True)
+    tb_select = tb_sites[tb_sites['siteid'].isin(asites)].reset_index(drop=False)
     aserial = tb_select['serial_number']
     asitenames = tb_select['sitename']
     aflin = []
