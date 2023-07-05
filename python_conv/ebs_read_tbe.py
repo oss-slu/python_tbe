@@ -1,10 +1,3 @@
-import pandas as pd
-import re
-from tzlocal import get_localzone
-from pytz import all_timezones
-
-from bdf_utils import get_attribute_check
-
 """
     Read tbe file
 
@@ -52,24 +45,17 @@ from bdf_utils import get_attribute_check
     - tb_gbl: Transposed version of tf_tbl if the current table is 'global'.
     - result: Final output containing all tables and corresponding metadata.
     """
+import pandas as pd
+import re
+from tzlocal import get_localzone
+from pytz import all_timezones
+
+from bdf_utils import get_attribute_check
 
 def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv', flsource='extdata', tblselect=None):
 
     result = {}  # initialize output
 
-    # if flsource == 'extdata':
-    #     flin_full = pkg_resources.resource_filename('Aqsebs', f'extdata/{flin}')
-    #     if not os.path.exists(flin_full):
-    #         return {'result': None, 'error': f'File not found: {flin}'}
-    # else:
-    #     flin_full = os.path.join(flsource, flin)
-
-    # if not os.path.isfile(flin_full):
-    #     return {'result': None, 'error': f'File not found: {flin_full}'}
-    # else:
-    #     print(f'Will read file {flin_full}')
-
-    # read and parse header column, read second column to fill in missing EOT:
     tf = pd.read_csv(flin, header=None, sep=',', usecols=[0, 1], keep_default_na=False)
     nrecs = len(tf)
     print("tf: ", tf)
@@ -89,13 +75,11 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
             print(f'Skipping table {tbl_str}')
             continue
 
-        # get last possible row in this table: either the row preceding the next table, or the end of the file:
         if ntbl < ntables:
             ilast = itbl_header[ntbl] - 1
         else:
             ilast = nrecs
 
-        # Find end of data:
         ieot = (tf_codes[(iheader + 1):ilast] == 'EOT').idxmax()
         skipdata = False
         if pd.notnull(ieot):
@@ -115,9 +99,7 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
                     print(f'No data and no metadata found for table {ntbl}/{ntables} (consider fixing your file)')
                     continue
 
-        # Find start of data:
         if skipdata:
-            # set istart to after table so all attributes are read
             istart = iend + 1
             ndata = 0
         else:
@@ -127,15 +109,12 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
             else:
                 iblank = (tf[0][(iheader + 1):iend] == '').idxmax()
                 if pd.notnull(iblank):
-                    # Use first row with blank code in the first column:
                     istart = iheader + iblank
                 else:
-                    # only one row of data signaled by EOT
                     istart = iend
                     print(f'BGN not found for table {ntbl}/{ntables}, using istart = {istart}')
             ndata = iend - istart + 1
 
-        # Read column names:
         hdr_all = pd.read_csv(flin, header=None, sep=',', skiprows=iheader, nrows=1, keep_default_na=False)
         tbl_name = hdr_all[0].str.replace('^TBL ', '')
         tbl_name = tbl_name.str.replace('\s', '_')
@@ -144,11 +123,9 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
         hdr[0] = 'TBL_' + tbl_name
         hdr_data = hdr_all[hdr_select].reset_index(drop=True)
 
-        # Find and read metadata:
         itbl_sites = (tf[0] == 'TBL Sites').idxmax()
         print("itbl_sites: ", itbl_sites)
-        ibgn = (tf[0][itbl_sites:] == 'BGN').idxmax()  # Adjusted to find 'BGN' after 'TBL Sites'
-
+        ibgn = (tf[0][itbl_sites:] == 'BGN').idxmax()
 
         if pd.notnull(itbl_sites) and pd.notnull(ibgn):
             iatt_start = itbl_sites + 1
@@ -156,16 +133,15 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
             print("iatt_start: ", iatt_start)
             print("iatt_end: ", iatt_end)
             print("tf_codes[iatt_start:iatt_end]: ",tf_codes[iatt_start:iatt_end] )
-            att_indices = tf_codes[iatt_start:iatt_end].str.startswith('ATT')  # Adjusted to find rows starting with 'ATT'
+            att_indices = tf_codes[iatt_start:iatt_end].str.startswith('ATT')
 
             if not att_indices.any():
                 print(f"No 'ATT' rows found between 'TBL Sites' and 'BGN' for table {ntbl}/{ntables}")
-                continue  # Skip to the next table
+                continue
 
             iatt = att_indices.idxmax()
         else:
             print(f"'TBL Sites' or 'BGN' row not found for table {ntbl}/{ntables}")
-            #continue  # Skip to the next table
             if pd.notnull(iatt):
                 iatt1 = iatt + iheader
                 iatt2 = iheader + (tf_codes[(iheader + 1):(istart - 1)] == 'ATT').last_valid_index()
@@ -183,7 +159,6 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
                 print(f'No attributes found for Table {ntbl}/{ntables}')
                 att_trans = None
 
-        # Read data:
         if ndata > 0:
             tf_tbl = pd.read_csv(flin, header=None, sep=',', skiprows=istart, nrows=ndata, usecols=hdr_select,
                                  keep_default_na=False)
@@ -196,7 +171,6 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
                 tf_tbl = tf_tbl[~icmt]
             tf_tbl.drop(columns=0, inplace=True)
             tf_tbl.columns = hdr_data.columns[:len(tf_tbl.columns)]
-            # reset timezones for all dates:
             for col in tf_tbl.columns:
                 rtn = get_attribute_check(att_trans, col, 'Units')
                 if rtn is None or pd.isnull(rtn['result']):
@@ -221,8 +195,6 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
         else:
             tf_tbl = None
 
-        
-        # Add data to result:
         if tf_tbl is None:
             print(f"Data for table {tbl_str} is None")
             result[tbl_str] = None
@@ -238,8 +210,6 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
             result['tc_' + tbl_str] = att_trans
         print(f'Added tables {tbl_str} and tc_{tbl_str} to the result dictionary')
 
-
-        # Summary message:
         print(f'Tables {tbl_str} and tc_{tbl_str} for table {ntbl}/{ntables}: {tf_description[iheader]}')
         if ndata > 0:
             print(f'  Rows: header at {iheader}, data from {istart} to {iend}')
@@ -254,6 +224,7 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
     print('**************** END OF EBS_READ_TBE *************')
     print(f'************************************************** \n\n')
     return {'result': result, 'error': None}
+
 
 if (__name__ == "__main__"):
     ebs_read_tbe()

@@ -55,8 +55,8 @@ def dks_uread_blueskyv2b():
 
     # Read the inventory file
     rtn = ebs_read_tbe(flin=flsites, flsource= '', tblselect= None)
-    print("Walrus: ", rtn)
 
+    print("Type: ", rtn['result']['sites'])
 
     # Debug statements to print the keys global and sites, (tc_global and tc_sites are empty)
     # rtn has two keys: 'result' and 'error'
@@ -87,6 +87,9 @@ def dks_uread_blueskyv2b():
             print("Warning: tb_sites or tc_sites not found in the input file.")
     else:
         raise ValueError(f"ebs_read_tbe read error: {rtn['error']}")
+
+    print("######### HERE #######")
+    print("Results[0]", rtn)
 
     tb_select = tb_sites[tb_sites['siteid'].isin(asites)].reset_index(drop=False)
     aserial = tb_select['serial_number']
@@ -248,4 +251,6 @@ def dks_uread_blueskyv2b():
         flcsv = f"{flroot}_{tinterval_str}_lt.csv"
         tbout.to_csv(flcsv, index=False)
         print(f"Wrote {flcsv} with scaled and unscaled pm25")
-dks_uread_blueskyv2b()
+
+if __name__ == "__main__":
+    dks_uread_blueskyv2b()

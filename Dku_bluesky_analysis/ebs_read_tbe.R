@@ -13,7 +13,7 @@
 #'   tf_tbl: single table read
 #' tb: tibble of data
 #' tc: tibble of metadata
-#'
+#' 
 #' hdr: header variables
 #' att: attribute variables (aka metadata)
 #' cmt: comments
