@@ -78,11 +78,13 @@ def dks_uread_blueskyv2b():
 
     if 'error' not in rtn or rtn['error'] is None:
         tc_sites = rtn['result']['tc_global']
-        tb_sites = rtn['result']['tc_sites']
+        tb_sites = rtn['result']['tc_sites'] ## This will need to be changed in ebs_read_tbe to return as tb_sites instead of tc_sites
         if tb_sites is None or tc_sites is None:
             print("Warning: tb_sites or tc_sites not found in the input file.")
     else:
         raise ValueError(f"ebs_read_tbe read error: {rtn['error']}")
+
+    print(tb_sites)
 
     tb_select = tb_sites[tb_sites[2].isin(asites)]
     aserial = tb_select[3]
