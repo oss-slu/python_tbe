@@ -124,7 +124,7 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
         hdr_data = hdr_all[hdr_select].reset_index(drop=True)
 
         itbl_sites = (tf[0] == 'TBL Sites').idxmax()
-        print("itbl_sites: ", itbl_sites)
+        # print("itbl_sites: ", itbl_sites)
         ibgn = (tf[0][itbl_sites:] == 'BGN').idxmax()
 
         if pd.notnull(itbl_sites) and pd.notnull(ibgn):
@@ -162,7 +162,6 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
         if ndata > 0:
             tf_tbl = pd.read_csv(flin, header=None, sep=',', skiprows=istart, nrows=ndata, usecols=hdr_select,
                                  keep_default_na=False)
-            print("THIS IS TF_TBL: ", tf_tbl)
             tf_tbl_codes = tf_tbl[0].str[:3]
             icmt = tf_tbl_codes == 'CMT'
             ncmt = icmt.sum()
@@ -201,11 +200,10 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
         elif tbl_str.lower() == 'global':
             tb_gbl = tf_tbl.transpose().reset_index()
             result[tbl_str] = tb_gbl.rename(columns={0: 'Variable'})
-        else:
-            result[tbl_str] = tf_tbl
+        
         if att_trans is None:
             print(f"Metadata for table {tbl_str} is None")
-            result['tc_' + tbl_str] = None
+            result['tc_' + tbl_str] = tf_tbl
         else:
             result['tc_' + tbl_str] = att_trans
         print(f'Added tables {tbl_str} and tc_{tbl_str} to the result dictionary')
@@ -219,8 +217,6 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
             print(f'  Rows: header only at {iheader}, no data, no metadata')
 
     print(f'Finished reading file: {flin}')
-    print('return: ',result)
-    print('')
     print('**************** END OF EBS_READ_TBE *************')
     print(f'************************************************** \n\n')
     return {'result': result, 'error': None}

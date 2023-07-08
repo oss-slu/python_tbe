@@ -56,8 +56,6 @@ def dks_uread_blueskyv2b():
     # Read the inventory file
     rtn = ebs_read_tbe(flin=flsites, flsource= '', tblselect= None)
 
-    print("Type: ", rtn['result']['sites'])
-
     # Debug statements to print the keys global and sites, (tc_global and tc_sites are empty)
     # rtn has two keys: 'result' and 'error'
     # rtn['result'] has keys global, tc_global, tc_sites, sites
@@ -79,21 +77,16 @@ def dks_uread_blueskyv2b():
     #     print("key:", key, "value:", value)
 
     if 'error' not in rtn or rtn['error'] is None:
-        tb = rtn['result']
-        tc = rtn['result']
-        tb_sites = rtn['result'].get('tb_sites')  # .get() will return None if 'tb_sites' doesn't exist
-        tc_sites = rtn['result'].get('tc_sites')  # same for 'tc_sites'
+        tc_sites = rtn['result']['tc_global']
+        tb_sites = rtn['result']['tc_sites']
         if tb_sites is None or tc_sites is None:
             print("Warning: tb_sites or tc_sites not found in the input file.")
     else:
         raise ValueError(f"ebs_read_tbe read error: {rtn['error']}")
 
-    print("######### HERE #######")
-    print("Results[0]", rtn)
-
-    tb_select = tb_sites[tb_sites['siteid'].isin(asites)].reset_index(drop=False)
-    aserial = tb_select['serial_number']
-    asitenames = tb_select['sitename']
+    tb_select = tb_sites[tb_sites[2].isin(asites)]
+    aserial = tb_select[3]
+    asitenames = tb_select[1]
     aflin = []
 
     for ns in aserial:
