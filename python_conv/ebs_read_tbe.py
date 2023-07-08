@@ -121,6 +121,7 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
         hdr_select = hdr_all.columns[~hdr_all.isna().any()]
         hdr = hdr_all[hdr_select].reset_index(drop=True)
         hdr[0] = 'TBL_' + tbl_name
+        print("tbl_name debug:", tbl_name)
         hdr_data = hdr_all[hdr_select].reset_index(drop=True)
 
         itbl_sites = (tf[0] == 'TBL Sites').idxmax()
@@ -219,6 +220,7 @@ def ebs_read_tbe(flin='./Dku_bluesky_analysis/saq_bluesky_bgd_20211001_20230430_
     print(f'Finished reading file: {flin}')
     print('**************** END OF EBS_READ_TBE *************')
     print(f'************************************************** \n\n')
+    print(result)
     return {'result': result, 'error': None}
 
 
