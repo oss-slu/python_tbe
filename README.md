@@ -7,6 +7,10 @@ Here's an overview of the files in the project.
 - **Saq_bluesky_dku_20210715_20230131_inv_tbe.csv**: Example TBE file with inventory of Bangladesh Low Cost Sensor (LCS) data.
 - **Saq_bgd_2_dhaka_u_pm25_2021_2022_tbe.csv**: Example TBE file with pollutant concentration (pm25), meteorological data and calculated columns.
 
+### Notes
+- tc and tb variables defined in the R code at the top are not neccessary to define in the python as they are going to be redefined later on in the code.
+
+
 ### Entry Point
 - **dku_read_blueskyv2b.R**: Adjust paths to read files in Bangladesh_level1 and create flat csv file.
   - To create tbe file, refer to `saq_create_tbe.R` in Aqsebs which created `saq_bgd_2_dhaka_u_pm25_2021_2022_tbe.csv`. Note that this is not set up to read Bangladesh_level1 (although it would not be much work to adjust it, saq_proc_sites.R is the driver routine). 

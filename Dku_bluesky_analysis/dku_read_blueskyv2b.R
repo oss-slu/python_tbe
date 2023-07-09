@@ -42,7 +42,7 @@ timeminsct <- ymd_hm('2021-10-01 00:00')
 ## Input directory of data:
 #indir = 'D:/cloud data for meeting/'
 #indir = 'C:/Users/bdefoy/Desktop/Dku_cloud_data/'
-indir = '../Dku_data_pull/Our\ Data/Bangladesh/'
+indir = '../Bangladesh_level1/'
 #indir = '/d/b/Aqs_saq/Data_tsiv2b/Nepal/'
 
 indirsites = ''
@@ -51,9 +51,10 @@ flsites = 'saq_bluesky_dku_20210715_20230131_inv_tbe.csv'
 flsites = 'saq_bluesky_bgd_20211001_20230430_inv_tbe.csv'
 
 rtn <- ebs_read_tbe(flin=flsites, flsource=indirsites, tblselect=NULL)
+print(rtn)
 if ( is.null(rtn$error) ) {
-    tb <- rtn$result$tb
-    tc <- rtn$result$tc
+    ## tb <- rtn$result$tb_s
+    ## tc <- rtn$result$tc
     tb_sites <- rtn$result$tb_sites
     tc_sites <- rtn$result$tc_sites
 } else {
