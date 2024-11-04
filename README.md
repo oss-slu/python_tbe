@@ -5,6 +5,15 @@ in Python, C, Rust, R, JavaScript, and Java, designed for flexible use by both p
 library allows you to parse, validate, manipulate, and export data from TBE files, facilitating cross-functional collaboration in 
 data-driven projects.
 
+## Sample Data Files
+This repository includes the following TBE sample data files:
+
+- **saq_bluesky_bgd_20211001_20230430_inv_tbe.csv** - Contains inventory data for Bluesky BGD covering the period from October 1, 2021, to April 30, 2023.
+- **saq_bluesky_dku_20210715_20230131_inv_tbe.csv** - Contains inventory data for Bluesky DKU from July 15, 2021, to January 31, 2023.
+- **saq_bluesky_npl_20220830_20230404_inv_tbe.csv** - Contains inventory data for Bluesky NPL from August 30, 2022, to April 4, 2023.
+
+These files are used as sample data to demonstrate the TBE file structure and test the TBE Processing Suite functionalities.
+
 ## What is TBE?
 
 TBE files are metadata-enriched tabular files that contain multiple structured "TBL" sections. Each section includes a unique 
