@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.INFO, format="%(asctime)s - %(levelname)s - %(
 
 def read_csv_directory(directory: str) -> Dict[str, Any]:
     """
-    Process all CSV files in the specified directory.
+    Process all CSV files in the specified directory and handle irregular CSV lines.
 
     Args:
         directory (str): Path to the directory containing CSV files.
@@ -17,7 +17,7 @@ def read_csv_directory(directory: str) -> Dict[str, Any]:
         Dict[str, Any]: A dictionary containing parsed data and metadata from CSV files.
     """
     parsed_data = {}
-    
+
     if not os.path.isdir(directory):
         logging.error(f"Invalid directory: {directory}")
         return parsed_data
@@ -34,16 +34,14 @@ def read_csv_directory(directory: str) -> Dict[str, Any]:
         file_path = os.path.join(directory, file_name)
         logging.info(f"Processing file: {file_name}")
         try:
-            # Read the CSV file into a pandas DataFrame
-            data = pd.read_csv(file_path)
-            parsed_data[file_name] = data 
+            # Read the CSV file into a pandas DataFrame, skipping lines with inconsistent columns
+            data = pd.read_csv(file_path, on_bad_lines="skip", engine="python")
+            parsed_data[file_name] = data
             logging.info(f"Successfully parsed: {file_name}")
         except Exception as e:
             logging.warning(f"Failed to process {file_name}: {e}")
 
     return parsed_data
-
-
 
 def generate_summary_report(parsed_data: Dict[str, Any], output_file: str):
     """
@@ -69,7 +67,6 @@ def generate_summary_report(parsed_data: Dict[str, Any], output_file: str):
     summary_df = pd.DataFrame(metadata_summary)
     summary_df.to_csv(output_file, index=False)
     logging.info(f"Summary report saved to: {output_file}")
-
 
 if __name__ == "__main__":
     directory = "/Users/harshithathota/Documents/tbe/sample_data"
