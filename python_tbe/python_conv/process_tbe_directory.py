@@ -26,6 +26,10 @@ def read_csv_directory(directory: str) -> Dict[str, Any]:
     files = os.listdir(directory)
     csv_files = [f for f in files if f.lower().endswith(".csv")]
 
+    for file_name in files:
+        if not file_name.lower().endswith(".csv"):
+            logging.warning(f"Skipping non-TBE file: {file_name}")
+
     if not csv_files:
         logging.warning("No CSV files found in the directory.")
         return parsed_data
