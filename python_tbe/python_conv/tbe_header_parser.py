@@ -1,4 +1,5 @@
 import logging
+import csv
 
 # Setup logging to capture information about warnings and errors
 logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(message)s')
