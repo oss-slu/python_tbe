@@ -38,8 +38,15 @@ def parse_tbe_file(file_path):
                     logging.warning(f"Duplicate key '{key}' found in TBL section.")
                 current_tbl[key] = value
 
+            #logging for unexpected rows or missing sections
+            elif current_tbl is None:  # When no valid section is being processed
+                logging.warning(f"Unexpected row format or missing section: {row}")
+
             else:
                 logging.warning(f"Unexpected row format or missing section: {row}")
+
+    # Final check for required fields in metadata
+    check_missing_metadata(metadata)
 
     # Return parsed metadata
     return metadata
