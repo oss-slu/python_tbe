@@ -11,7 +11,7 @@ class TestTBEParser(unittest.TestCase):
 
     def test_parse_tbe_file_valid(self):
         # Simulate a valid TBE file (replace with the actual file or mock it)
-        test_file = 'test_invalid_format_tbe.csv'
+        test_file = 'test_valid_tbe.csv.csv'
         metadata = parse_tbe_file(test_file)
         self.assertIn('Title', metadata)
         self.assertIn('Source', metadata)
