@@ -43,3 +43,10 @@ def parse_tbe_file(file_path):
 
     # Return parsed metadata
     return metadata
+
+def check_missing_metadata(metadata):
+    # Define required fields that must be present in the metadata
+    required_fields = ['Title', 'Source']
+    for field in required_fields:
+        if field not in metadata:
+            logging.warning(f"Missing required metadata field: '{field}'")
