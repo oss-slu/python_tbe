@@ -52,7 +52,7 @@
             <artifactId>exec-maven-plugin</artifactId>
             <version>3.5.0</version>
             <configuration>
-                <mainClass>Maven.PythonFileProcessor</mainClass>
+                <mainClass>Maven.TBEFileProcessor</mainClass>
             </configuration>
         </plugin>
     </plugins>
