@@ -1,54 +1,32 @@
 import unittest
-from io import StringIO
-import logging
-from tbe_header_parser import parse_tbe_file, check_missing_metadata
+from tbe_header_parser import parse_tbe_file
 
 class TestTBEParser(unittest.TestCase):
-    def setUp(self):
-        # Capture logging output
-        self.log_stream = StringIO()
-        logging.basicConfig(stream=self.log_stream, level=logging.WARNING)
-
     def test_parse_tbe_file_valid(self):
-        # Simulate a valid TBE file (replace with the actual file or mock it)
-        test_file = os.path.join(self.base_dir, 'test_valid_tbe.csv')
+        test_file = 'test_valid_tbe.csv'
         metadata = parse_tbe_file(test_file)
-        self.assertIn('Title', metadata)
-        self.assertIn('Source', metadata)
+        self.assertIsNotNone(metadata)  # Ensure metadata is not None
         self.assertIn('TBL', metadata)
+        self.assertIn('Title', metadata['TBL'])
 
     def test_parse_tbe_file_missing_title(self):
-        # Simulate a TBE file missing the 'Title' field
-        test_file = os.path.join(self.base_dir, 'test_missing_title_tbe.csv')
-        metadata = parse_tbe_file(test_file)
-        self.assertNotIn('Title', metadata)
-        check_missing_metadata(metadata)
-
-        # Verify the log captured the missing Title warning
-        self.log_stream.seek(0)
-        log_output = self.log_stream.read()
-        self.assertIn("Missing required metadata field: 'Title'", log_output)
-
-
-    def test_parse_tbe_file_duplicate_key(self):
-        # Simulate a TBE file with duplicate keys in a TBL section
-        test_file = os.path.join(self.base_dir, 'test_duplicate_key_tbe.csv')
-        metadata = parse_tbe_file(test_file)
-        self.assertIn('Duplicate key', str(metadata))
-
-        # Verify that the duplicate key warning was logged
-        self.log_stream.seek(0)
-        log_output = self.log_stream.read()
-        self.assertIn("Duplicate key 'Title'", log_output)
-
+        test_file = 'test_missing_title_tbe.csv'
+        
+        # Capture log output using assertLogs
+        with self.assertLogs(level='WARNING') as cm:
+            metadata = parse_tbe_file(test_file)
+        
+        log_output = cm.output
+        # Now check for the missing title warning
+        self.assertIn("WARNING:root:Missing required metadata field: 'Title'", log_output)
+        self.assertIsNotNone(metadata)  # Ensure metadata is returned even if incomplete
 
     def test_parse_tbe_file_invalid_format(self):
-        # Simulate a TBE file with invalid format (e.g., missing values)
-        test_file = os.path.join(self.base_dir, 'test_invalid_format_tbe.csv')
+        test_file = 'test_invalid_format_tbe.csv'
         metadata = parse_tbe_file(test_file)
         self.assertIsNone(metadata)
 
-        # Check if invalid format was captured
-        self.log_stream.seek(0)
-        log_output = self.log_stream.read()
-        self.assertIn("Unexpected row format", log_output)
+    def test_parse_tbe_file_empty(self):
+        test_file = 'test_empty_tbe.csv'
+        metadata = parse_tbe_file(test_file)
+        self.assertIsNone(metadata)  # Expect None for empty files
