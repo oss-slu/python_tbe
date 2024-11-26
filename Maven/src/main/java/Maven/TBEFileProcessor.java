@@ -7,6 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
+import java.util.List;
 import java.util.logging.Logger;
 
 import org.json.JSONArray;
@@ -82,7 +83,19 @@ public class TBEFileProcessor {
         metadata.put("file_size", attr.size());    // File size in bytes
         metadata.put("creation_time", attr.creationTime().toString());  // File creation time
         metadata.put("last_modified_time", attr.lastModifiedTime().toString());  // Last modified time
-
+        
+        if (file.getName().endsWith(".csv")) {
+        List<String> lines = Files.readAllLines(filePath);
+        metadata.put("row_count", lines.size() - 1);
+        if (!lines.isEmpty()) {
+            String[] columns = lines.get(0).split(",");
+            metadata.put("column_count", columns.length);
+            metadata.put("column_names", new JSONArray(columns));
+            if (lines.size() > 1) {
+                metadata.put("sample_data", new JSONArray(lines.subList(1, Math.min(5, lines.size()))));
+            }
+        }
+    }
         return metadata;
     }
 
