@@ -1,6 +1,3 @@
-# PYTHONPATH=$(pwd) pytest ./python_tbe/tests/test_tbe_file_operations.py --maxfail=1 --disable-warnings -q
-# PYTHONPATH=$(pwd) pytest ./python_tbe/tests/test_tbe_file_operations.py --maxfail=1 --disable-warnings
-
 import pytest
 import os
 import pandas as pd

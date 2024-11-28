@@ -3,31 +3,34 @@ name: Python Test Workflow
 on:
   push:
     branches:
-      - main  
+      - main
       - 27-python_unit-test-cases
   pull_request:
     branches:
-      - main  
+      - main
       - 27-python_unit-test-cases
+
 jobs:
   test:
-    runs-on: ubuntu-latest 
+    runs-on: ubuntu-latest
 
     steps:
       - name: Check out code
-        uses: actions/checkout@v2 
+        uses: actions/checkout@v2
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: 3.11  
+          python-version: 3.11
 
       - name: Install dependencies
         run: |
-          pip install pandas pytest 
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pandas pytest
 
       - name: Run tests
         env:
-          PYTHONPATH: ${{ github.workspace }}/python_tbe  
-        run: | 
-          pytest -s --maxfail=1 --disable-warnings -q
+          PYTHONPATH: ${{ github.workspace }}  
+        run: |
+          pytest ./python_tbe/tests/test_tbe_file_operations.py --maxfail=1 --disable-warnings -q
