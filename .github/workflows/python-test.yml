@@ -25,7 +25,7 @@ jobs:
 
       - name: Install dependencies
         run: |
-          pip install pandas pytest
+          pip install pandas pytest tzlocal
 
       - name: Run tests
         env:
