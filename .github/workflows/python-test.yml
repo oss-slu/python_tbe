@@ -1,0 +1,27 @@
+name: Python Test Workflow
+
+on:
+  push:
+    branches:
+      - main  
+      - 27-python_unit-test-cases
+  pull_request:
+    branches:
+      - main  
+      - 27-python_unit-test-cases
+jobs:
+  test:
+    runs-on: ubuntu-latest 
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2 
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: 3.11  
+
+      - name: Run tests
+        run: |
+          pytest --maxfail=1 --disable-warnings -q  # Run the tests with output visible
