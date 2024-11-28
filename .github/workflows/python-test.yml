@@ -22,6 +22,10 @@ jobs:
         with:
           python-version: 3.11  
 
+      - name: Install dependencies
+        run: |
+          pip install pytest  
+
       - name: Run tests
         run: |
           pytest -s --maxfail=1 --disable-warnings -q  # Run the tests with output visible
