@@ -27,5 +27,7 @@ jobs:
           pip install pandas pytest 
 
       - name: Run tests
-        run: |
-          pytest -s --maxfail=1 --disable-warnings -q  # Run the tests with output visible
+        env:
+          PYTHONPATH: ${{ github.workspace }}/python_tbe  
+        run: | 
+          pytest -s --maxfail=1 --disable-warnings -q
