@@ -24,4 +24,4 @@ jobs:
 
       - name: Run tests
         run: |
-          pytest --maxfail=1 --disable-warnings -q  # Run the tests with output visible
+          pytest -s --maxfail=1 --disable-warnings -q  # Run the tests with output visible
