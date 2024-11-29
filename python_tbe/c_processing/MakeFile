@@ -1,0 +1,14 @@
+CC = gcc
+CFLAGS = -Wall -g
+
+all: tbe_batch_processor
+
+tbe_batch_processor: tbe_batch_processor.c
+	$(CC) $(CFLAGS) -o tbe_batch_processor tbe_batch_processor.c
+
+test: tbe_batch_processor tests/test_tbe_batch_processor.c
+	$(CC) $(CFLAGS) -o test_tbe tests/test_tbe_batch_processor.c tbe_batch_processor.c
+	./test_tbe
+
+clean:
+	rm -f tbe_batch_processor test_tbe
