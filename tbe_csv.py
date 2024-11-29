@@ -87,7 +87,7 @@ def export_tbl_data(flin, output_dir, combined_csv=False):
 
 if __name__ == "__main__":
     # Define paths and flags
-    input_file = "../../sample_data/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv"
+    input_file = "./sample_data/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv"
     output_directory = './output'
     
     # Ensure output directory exists
