@@ -1,0 +1,60 @@
+# Compiled binary and shared object files
+*.so
+*.o
+*.out
+
+# C language temporary files
+*.log
+*.dSYM/
+*.obj
+*.elf
+*.a
+*.bin
+*.exe
+*.stackdump
+*.pyc
+*.pyo
+*.pdb
+
+# Python cache and virtual environment files
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+
+# IDE and editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# MacOS system files
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Node.js-related (if applicable)
+node_modules/
+npm-debug.log*
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# Backup files
+*.bak
+*.orig
+*.save
+*.~*
+*.swp
+*.swo
+
+# Directories to ignore
+tests/
+
+# Ignore the compiled shared library
+python_tbe/c_processing/tbe_batch_processor.so
+
+# Sample data (if not required in Git)
+sample_data/
