@@ -105,8 +105,7 @@ process_csv_directory <- function(directory_path) {
   return(list(data = all_data, metadata_summary = all_metadata, json_summary = json_summary))
 }
 
-# Set the directory path to your 'sample_data' folder relative to your R script
-directory_path <- "./sample_data"  # Relative path to the folder with CSV files
 
-# Call the function to process the CSV files
+directory_path <- "./sample_data"  
+
 result <- process_csv_directory(directory_path)
