@@ -35,10 +35,10 @@ detect_table_sections_and_attributes <- function(data) {
 # Function to extract detailed column metadata
 extract_column_metadata <- function(data) {
   metadata <- list(
-    column_names = as.character(data[1, ]),  # Assuming first row contains column names
-    att_units = as.character(data[2, ]),    # Assuming second row contains ATT Units
-    att_description = as.character(data[3, ]),  # Assuming third row contains ATT Description
-    att_displayname = as.character(data[4, ])   # Assuming fourth row contains ATT DisplayName
+    column_names = as.character(data[1, ]),
+    att_units = as.character(data[2, ]),    
+    att_description = as.character(data[3, ]),  
+    att_displayname = as.character(data[4, ])  
   )
   
   # Filter out NA or blank entries if necessary
@@ -55,13 +55,13 @@ parse_csv_with_metadata <- function(file_path) {
     cat("Processing file:", file_path, "\n")
     
     # Read the CSV with the first few rows to capture metadata
-    preview_data <- read_csv(file_path, n_max = 10, show_col_types = FALSE, col_names = FALSE)
+    preview_data <- read_csv(file_path, n_max = 100, show_col_types = FALSE, col_names = FALSE)
     
     # Extract column metadata
     column_metadata <- extract_column_metadata(preview_data)
     
-    # Read full file, skipping metadata rows
-    csv_data <- read_csv(file_path, skip = 4, show_col_types = FALSE)  # Assuming first 4 rows are metadata
+    # Read full file
+    csv_data <- read_csv(file_path, show_col_types = FALSE)
     
     # Combine file and column metadata
     metadata <- list(
@@ -104,7 +104,6 @@ process_csv_directory_with_metadata <- function(directory_path) {
   return(json_summary)
 }
 
-# Specify directory
 directory_path <- "./sample_data"
 
 # Process files
