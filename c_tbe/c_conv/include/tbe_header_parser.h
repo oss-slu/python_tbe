@@ -1,31 +1,33 @@
-#ifndef TBE_HEADER_H
-#define TBE_HEADER_H
+#ifndef TBE_HEADER_PARSER_H
+#define TBE_HEADER_PARSER_H
 
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
 
-// Define constants for maximum lengths
+// Define maximum lengths for names and values
 #define MAX_NAME_LEN 256
-#define MAX_VALUE_LEN 1024
+#define MAX_VALUE_LEN 512
 
-// Structure to hold an attribute (ATT)
+// Structure for a key-value pair (used for global metadata)
 typedef struct Attribute {
     char name[MAX_NAME_LEN];
     char value[MAX_VALUE_LEN];
-    struct Attribute* next; // Pointer to the next attribute in the linked list
+    struct Attribute* next;
 } Attribute;
 
-// Structure to hold a TBL section
+// Structure for a TBL section
 typedef struct TBLSection {
-    char name[MAX_NAME_LEN];       // Name of the TBL section
-    Attribute* attributes;         // Linked list of attributes for this section
-    struct TBLSection* next;       // Pointer to the next TBL section
+    char name[MAX_NAME_LEN];
+    Attribute* attributes;
+    struct TBLSection* next;
 } TBLSection;
 
-// Structure to represent the entire TBE header
+// Structure for the entire TBE header
 typedef struct TBEHeader {
-    TBLSection* sections;          // Linked list of TBL sections
+    Attribute* bgn_attributes;    // Global metadata before TBL sections
+    Attribute* eot_attributes;    // Global metadata after TBL sections
+    TBLSection* sections;         // Linked list of TBL sections
 } TBEHeader;
 
 // Function prototypes
@@ -33,4 +35,4 @@ TBEHeader* parse_tbe_header(const char* filename);
 void free_tbe_header(TBEHeader* header);
 void print_tbe_header(const TBEHeader* header);
 
-#endif // TBE_HEADER_H
+#endif // TBE_HEADER_PARSER_H

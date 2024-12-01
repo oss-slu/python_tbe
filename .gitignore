@@ -10,3 +10,6 @@ __pycache__/
 
 # Ignore VS files
 .vs
+
+# Ignore generated CSV files
+c_tbe/output_data/*
