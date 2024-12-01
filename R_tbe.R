@@ -1,111 +1,111 @@
 library(jsonlite)  # For JSON output
 library(dplyr)     # For data manipulation
 library(readr)     # For fast CSV reading
+library(lubridate) # For working with dates and times
 
-# Function to clean up a row and detect column headers
-clean_row_for_header <- function(row) {
-  # Remove any extra whitespace and NA values
-  cleaned_row <- trimws(row)  # Trim whitespace from all elements
-  cleaned_row[cleaned_row == ""] <- NA  # Replace empty strings with NA
+# Function to detect table sections and attributes
+detect_table_sections_and_attributes <- function(data) {
+  sections <- list()
   
-  # If a row has no NA values, it could be the header row
-  return(all(!is.na(cleaned_row)))
+  # Heuristic: Detect table sections based on patterns in column names or specific markers
+  section_markers <- which(grepl("Section|Header", names(data), ignore.case = TRUE))
+  
+  if (length(section_markers) > 0) {
+    for (marker in section_markers) {
+      section_name <- names(data)[marker]
+      section_data <- data[, marker, drop = FALSE]
+      
+      sections[[section_name]] <- list(
+        attribute_names = colnames(section_data),
+        row_count = nrow(section_data),
+        column_count = ncol(section_data)
+      )
+    }
+  } else {
+    sections[["default"]] <- list(
+      attribute_names = colnames(data),
+      row_count = nrow(data),
+      column_count = ncol(data)
+    )
+  }
+  
+  return(sections)
 }
 
-# Function to dynamically read the first few rows to detect column headers
-parse_csv_file <- function(file_path) {
+# Function to extract detailed column metadata
+extract_column_metadata <- function(data) {
+  metadata <- list(
+    column_names = as.character(data[1, ]),  # Assuming first row contains column names
+    att_units = as.character(data[2, ]),    # Assuming second row contains ATT Units
+    att_description = as.character(data[3, ]),  # Assuming third row contains ATT Description
+    att_displayname = as.character(data[4, ])   # Assuming fourth row contains ATT DisplayName
+  )
+  
+  # Filter out NA or blank entries if necessary
+  metadata <- lapply(metadata, function(row) {
+    row[!is.na(row) & row != ""]
+  })
+  
+  return(metadata)
+}
+
+# Parse function with column metadata extraction
+parse_csv_with_metadata <- function(file_path) {
   tryCatch({
-    # Print the file path for debugging
     cat("Processing file:", file_path, "\n")
     
-    # Read the first 20 rows to preview and detect header row
-    preview_data <- read_csv(file_path, n_max = 100, show_col_types = FALSE, col_names = FALSE)
+    # Read the CSV with the first few rows to capture metadata
+    preview_data <- read_csv(file_path, n_max = 10, show_col_types = FALSE, col_names = FALSE)
     
-    # Iterate through the preview data to detect where the header row is
-    header_row <- NULL
-    for (i in 1:nrow(preview_data)) {
-      if (clean_row_for_header(preview_data[i,])) {
-        header_row <- i
-        break
-      }
-    }
+    # Extract column metadata
+    column_metadata <- extract_column_metadata(preview_data)
     
-    if (is.null(header_row)) {
-      stop("Unable to detect header row in the file:", file_path)
-    }
+    # Read full file, skipping metadata rows
+    csv_data <- read_csv(file_path, skip = 4, show_col_types = FALSE)  # Assuming first 4 rows are metadata
     
-    # Read the full file again with the correct header row, starting at the header row
-    csv_data <- read_csv(file_path, skip = header_row - 1, show_col_types = FALSE)
-    
-    # Extract metadata: file name, file size, record count, and column names
+    # Combine file and column metadata
     metadata <- list(
+      creation_time = format(Sys.time(), "%Y-%m-%dT%H:%M:%OSZ"),
+      last_modified_time = format(file.info(file_path)$mtime, "%Y-%m-%dT%H:%M:%OSZ"),
       file_name = basename(file_path),
-      file_size = file.info(file_path)$size,
-      record_count = nrow(csv_data),
-      column_names = paste(colnames(csv_data), collapse = ", ")  # Concatenate column names into a single string
+      row_count = nrow(csv_data),
+      column_count = ncol(csv_data),
+      column_metadata = column_metadata
     )
     
-    # Return parsed data and metadata
-    return(list(data = csv_data, metadata = metadata))
-    
+    return(metadata)
   }, error = function(e) {
-    message(paste("Error reading file:", file_path, "\n", e$message))
+    message(paste("Error processing file:", file_path, "\n", e$message))
     return(NULL)
   })
 }
 
-# Main function to process the CSV files in a directory
-process_csv_directory <- function(directory_path) {
-  # Get list of all files in the directory (including full file path)
+# Main function to process files
+process_csv_directory_with_metadata <- function(directory_path) {
   all_files <- list.files(directory_path, full.names = TRUE)
-  
-  # Filter for CSV files only
   csv_files <- all_files[grepl("\\.csv$", all_files)]
   
-  # Initialize variables to store processed data and metadata
-  all_data <- list()  # To store data frames from each file
-  all_metadata <- data.frame()  # To store metadata for each file
-  
-  # Check if there are CSV files to process
   if (length(csv_files) == 0) {
     stop("No CSV files found in the specified directory.")
   }
   
-  # Process each CSV file only once
+  all_metadata <- list()
+  
   for (file_path in csv_files) {
     cat("Processing file:", file_path, "\n")
-    
-    # Parse the CSV file and extract data and metadata
-    result <- parse_csv_file(file_path)
-    
+    result <- parse_csv_with_metadata(file_path)
     if (!is.null(result)) {
-      # Store parsed data and metadata
-      all_data[[file_path]] <- result$data
-      all_metadata <- bind_rows(all_metadata, as.data.frame(result$metadata))
+      all_metadata <- append(all_metadata, list(result))
     }
   }
   
-  # Handle non-CSV files (if needed)
-  non_csv_files <- all_files[!grepl("\\.csv$", all_files)]
-  if (length(non_csv_files) > 0) {
-    warning(paste("Non-CSV files found and skipped:", paste(non_csv_files, collapse = ", ")))
-  }
-  
-  # Check if any data was processed
-  if (length(all_data) == 0) {
-    stop("No valid CSV files were processed.")
-  }
-  
-  # Return summary in JSON format
   json_summary <- toJSON(all_metadata, pretty = TRUE)
   cat("Summary Metadata:\n", json_summary, "\n")
-  
-  # Print and Return data and metadata
-  print("Returning the results with data and summary:")
-  return(list(data = all_data, metadata_summary = all_metadata, json_summary = json_summary))
+  return(json_summary)
 }
 
+# Specify directory
+directory_path <- "./sample_data"
 
-directory_path <- "./sample_data"  
-
-result <- process_csv_directory(directory_path)
+# Process files
+result <- process_csv_directory_with_metadata(directory_path)
