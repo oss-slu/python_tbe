@@ -1,5 +1,6 @@
 const fs = require('fs')
 const path = require('path')
+const { parseTBEMetadata } = require('./parseUtils')
 
 /**
  * Processes all TBE files in a directory, aggregates metadata, and generates a summary report.
@@ -20,6 +21,8 @@ async function processTBEDirectory(directoryPath) {
             if (isTBEFile(filePath)) {
                 console.log(`Processing file: ${file}`)
 
+                const metadata = await parseTBEMetadata(filePath)
+                metadataSummary[file] = metadata
             } else {
                 console.warn(`Skipping non-TBE file: ${file}`)
             }
