@@ -3,34 +3,6 @@ library(dplyr)     # For data manipulation
 library(readr)     # For fast CSV reading
 library(lubridate) # For working with dates and times
 
-# Function to detect table sections and attributes
-detect_table_sections_and_attributes <- function(data) {
-  sections <- list()
-  
-  # Heuristic: Detect table sections based on patterns in column names or specific markers
-  section_markers <- which(grepl("Section|Header", names(data), ignore.case = TRUE))
-  
-  if (length(section_markers) > 0) {
-    for (marker in section_markers) {
-      section_name <- names(data)[marker]
-      section_data <- data[, marker, drop = FALSE]
-      
-      sections[[section_name]] <- list(
-        attribute_names = colnames(section_data),
-        row_count = nrow(section_data),
-        column_count = ncol(section_data)
-      )
-    }
-  } else {
-    sections[["default"]] <- list(
-      attribute_names = colnames(data),
-      row_count = nrow(data),
-      column_count = ncol(data)
-    )
-  }
-  
-  return(sections)
-}
 
 # Function to extract detailed column metadata
 extract_column_metadata <- function(data) {
