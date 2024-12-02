@@ -29,17 +29,17 @@ This utility allows users to efficiently read and process TBE files within a dir
    ```bash
    cd project-name
    ```
-3. Install dependencies:
+3. Install dependencies: (No dependencies for this feature besides the prerequisite Node JS, skip step if node is installed)
    ```bash
    npm install
    ```
 
 ## **Usage**
-To process TBE files and extract metadata:
-1. Place your TBE files in the `data/` directory (or specify a directory path).
-2. Run the `processTBE.js` script:
+### To Read TBE Files and Out Processed Metadata as JSON:
+1. Place your TBE files in the `sample_data/` directory (or specify a directory path).
+2. Run the `read_TBE.js` script:
    ```bash
-   node processTBE.js
+   node read_TBE.js
    ```
 
 The script will read all `.tbe` files in the specified directory, extract metadata, and log it in the console as a JSON object.
@@ -53,13 +53,3 @@ The script will read all `.tbe` files in the specified directory, extract metada
 
 Please ensure that your code follows the project's conventions and includes tests where applicable.
 
-## **Directory Structure**
-```
-project-name/
-├── data/                     # Directory containing TBE files
-├── src/
-│   ├── fileUtils.js          # Utility functions for file operations
-│   ├── processTBE.js         # Script to process TBE files and extract metadata
-├── package.json              # Project dependencies and configuration
-└── README.md                 # Project documentation
-```
