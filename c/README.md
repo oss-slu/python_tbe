@@ -19,8 +19,8 @@ Prerequisites
 Build the C Shared Library
 
 Run the following command to compile the C code and generate a shared library:
-gcc -shared -o python_tbe/c_processing/tbe_batch_processor.so \
-python_tbe/c_processing/tbe_batch_processor.c \
+gcc -shared -o c/src/functions/tbe_batch_processor.so \                                                          ✔  system  
+c/src/functions/tbe_batch_processor.c \
 -I/opt/homebrew/Cellar/json-c/0.18/include/json-c \
 -L/opt/homebrew/Cellar/json-c/0.18/lib -ljson-c
 
@@ -34,7 +34,7 @@ Usage
 Process TBE Files
 
 Run the Python integration script with the path to the compiled .so file and the directory containing TBE files:
-python3 python_tbe/python_conv/c_tbe_integration.py ./python_tbe/c_processing/tbe_batch_processor.so ./sample_data
+python3 python_tbe_archive/python_conv/c_tbe_integration.py c/src/functions/tbe_batch_processor.so ./sample_data
 
 Output
 
