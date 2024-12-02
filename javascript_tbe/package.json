@@ -4,6 +4,7 @@
   "description": "",
   "main": "parse_tbe.js",
   "scripts": {
+    "start": "node parse_tbe",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],
