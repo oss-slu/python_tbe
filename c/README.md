@@ -34,7 +34,7 @@ Usage
 Process TBE Files
 
 Run the Python integration script with the path to the compiled .so file and the directory containing TBE files:
-python3 python_tbe_archive/python_conv/c_tbe_integration.py c/src/functions/tbe_batch_processor.so ./sample_data
+python3 python_tbe/c_tbe_integration.py c/src/functions/tbe_batch_processor.so ./sample_data
 
 Output
 
