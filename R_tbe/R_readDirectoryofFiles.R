@@ -76,7 +76,7 @@ process_csv_directory_with_metadata <- function(directory_path) {
   return(json_summary)
 }
 
-directory_path <- "./sample_data"
+directory_path <- "../tbe/sample_data"
 
 # Process files
 result <- process_csv_directory_with_metadata(directory_path)
