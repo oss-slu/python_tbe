@@ -1,3 +1,16 @@
+## isolate_header
+
+(Add your content here)
+
+## output_csv
+
+(Add your content here)
+
+## output_TBE
+
+(Add your content here)
+
+## read_directory
 TBE Batch Processor
 
 This project provides functionality for processing TBE files in batch mode using a combination of C and Python. It parses TBE files from a specified directory, aggregates metadata, generates summaries, and outputs the results in both text and JSON formats.
@@ -42,8 +55,6 @@ Output
     JSON Output: A metadata_summary.json file containing the aggregated metadata.
 
 
-File Structure
-Created Files
 1. python_tbe/c_processing/tbe_batch_processor.c
 
 C implementation for batch processing TBE files.
@@ -69,5 +80,21 @@ For future contributions:
 
     Follow the structure and naming conventions.
     Update this README with details of added functionality.
+
+## read_TBE
+
+(Add your content here)
+
+## strip_header
+
+(Add your content here)
+
+## unit_tests
+
+(Add your content here)
+
+## validate_TBE
+
+(Add your content here)
 
 For queries, feel free to contact the repository maintainer.
