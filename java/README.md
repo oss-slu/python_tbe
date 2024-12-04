@@ -12,7 +12,25 @@
 
 ## read_directory
 
-(Add your content here)
+## Overview
+`ReadDirectory` is a Java application that allows users to read and process files from a directory. This project uses Maven for dependency management and build automation.
+
+## Prerequisites
+Before you start, ensure that you have the following installed on your system:
+- Java Development Kit (JDK) 8 or higher
+- Apache Maven 3.6.0 or higher
+
+## Verify the installation:
+- java -version
+- mvn -version
+
+- Ensure you have correct structure for Maven project and update pom.xml with the file name
+
+## Compile the code:
+mvn compile
+
+## Run the code:
+mvn exec:java 
 
 ## read_TBE
 
