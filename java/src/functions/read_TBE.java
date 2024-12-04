@@ -10,7 +10,6 @@ public class Read_TBE {
     public void loadTBEFile() {
 
         String rootDir = System.getProperty("user.dir");
-        System.out.println("root dir : " + rootDir);
         File root = new File(rootDir);
         File projectRoot = root.getParentFile().getParentFile().getParentFile();
 
