@@ -32,6 +32,8 @@ mvn compile
 ## Run the code:
 mvn exec:java 
 
+- Output data about metadata is saved in Read_directory_metadata.json
+
 ## read_TBE
 
 (Instructions to Run the Read_TBE Program

@@ -19,7 +19,7 @@ public class ReadDirectory {
 
     public static void main(String[] args) {
         String directoryPath = "../../sample_data";
-        String outputFilePath = "metadata_summary.json";
+        String outputFilePath = "Read_directory_metadata.json";
 
         try {
             // Process TBE files in the directory
