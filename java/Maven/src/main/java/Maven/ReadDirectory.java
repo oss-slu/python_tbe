@@ -13,12 +13,12 @@ import java.util.logging.Logger;
 import org.json.JSONArray;
 import org.json.JSONObject;
 
-public class TBEFileProcessor {
+public class ReadDirectory {
 
-    private static final Logger logger = Logger.getLogger(TBEFileProcessor.class.getName());
+    private static final Logger logger = Logger.getLogger(ReadDirectory.class.getName());
 
     public static void main(String[] args) {
-        String directoryPath = "../sample_data";
+        String directoryPath = "../../sample_data";
         String outputFilePath = "metadata_summary.json";
 
         try {

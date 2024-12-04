@@ -52,7 +52,7 @@
             <artifactId>exec-maven-plugin</artifactId>
             <version>3.5.0</version>
             <configuration>
-                <mainClass>Maven.TBEFileProcessor</mainClass>
+                <mainClass>Maven.ReadDirectory</mainClass>
             </configuration>
         </plugin>
     </plugins>
