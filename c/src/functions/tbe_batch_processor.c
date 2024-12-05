@@ -3,7 +3,7 @@
 #include <string.h>
 #include <dirent.h>
 #include <stdlib.h>
-#include "/opt/homebrew/Cellar/json-c/0.18/include/json-c/json.h"
+#include <json-c/json.h>// Use a generic include path
 
 // Aggregate structure for metadata
 typedef struct {
