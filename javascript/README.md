@@ -53,3 +53,34 @@ The script will read all `.tbe` files in the specified directory, extract metada
 
 Please ensure that your code follows the project's conventions and includes tests where applicable.
 
+## isolate_header
+
+(Add your content here)
+
+## output_csv
+
+(Add your content here)
+
+## output_TBE
+
+(Add your content here)
+
+## read_directory
+
+(Add your content here)
+
+## read_TBE
+
+(Add your content here)
+
+## strip_header
+
+(Add your content here)
+
+## unit_tests
+
+(Add your content here)
+
+## validate_TBE
+
+(Add your content here)
