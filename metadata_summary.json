@@ -1,1 +1,7 @@
-{ "processed_files": 3, "skipped_files": 2, "total_files": 5, "total_records": 335, "average_records_per_file": 111.66666666666667, "files": [ { "filename": ".\/sample_data\/saq_bluesky_npl_20220830_20230404_inv_tbe.csv", "records": 156 }, { "filename": ".\/sample_data\/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv", "records": 88 }, { "filename": ".\/sample_data\/saq_bluesky_dku_20210715_20230131_inv_tbe.csv", "records": 91 } ] }
+{
+  "processed_files": 3,
+  "skipped_files": 2,
+  "total_files": 5,
+  "total_records": 335,
+  "average_records_per_file": 111.67
+}

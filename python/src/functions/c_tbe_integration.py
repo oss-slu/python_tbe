@@ -1,111 +1,137 @@
-import ctypes
 import os
+import subprocess
 import sys
-import json
 
 
 class CTbeIntegration:
     """
-    Python integration for the C-based TBE batch processor.
+    Python integration for the C-based TBE batch processor without precompiled shared libraries.
+    Dynamically compiles the C code into an executable at runtime and runs it directly.
     """
 
-    def __init__(self, lib_path: str):
+    def __init__(self, c_source_file: str, main_file: str):
         """
-        Initialize the integration by loading the C library.
+        Initialize the integration by compiling the C source file dynamically.
 
-        :param lib_path: Path to the compiled C shared library (e.g., .so file).
+        :param c_source_file: Path to the C source file to be compiled.
+        :param main_file: Path to the main C file for compilation.
         """
-        if not os.path.exists(lib_path):
-            raise FileNotFoundError(f"The library file '{lib_path}' does not exist.")
-        self.lib = ctypes.CDLL(lib_path)
+        if not os.path.exists(c_source_file):
+            raise FileNotFoundError(f"The C source file '{c_source_file}' does not exist.")
 
-        # Define the argument and return types for the C functions
-        self.lib.process_tbe_directory.argtypes = [ctypes.c_char_p]
-        self.lib.process_tbe_directory.restype = ctypes.c_int
+        if not os.path.exists(main_file):
+            raise FileNotFoundError(f"The main C file '{main_file}' does not exist.")
 
-        # Define the metadata summary generation function
-        self.lib.generate_metadata_summary.argtypes = []
-        self.lib.generate_metadata_summary.restype = None
+        self.c_source_file = os.path.abspath(c_source_file)
+        self.main_file = os.path.abspath(main_file)
+        self.executable = None
+
+        # Dynamically compile the C code into an executable
+        self.compile_c_code()
+
+    def compile_c_code(self):
+        """
+        Compile the C source code into an executable dynamically at runtime.
+        """
+        system = sys.platform
+        output_dir = os.path.dirname(self.c_source_file)
+        executable_name = "tbe_batch_processor"
+
+        # Attempt to fetch paths for json-c via Homebrew if available
+        try:
+            json_c_prefix = subprocess.check_output(["brew", "--prefix", "json-c"]).decode().strip()
+            json_c_include = os.path.join(json_c_prefix, "include")
+            json_c_lib = os.path.join(json_c_prefix, "lib")
+        except Exception:
+            # Fall back to relative paths if Homebrew is not available
+            json_c_include = "include/json-c"
+            json_c_lib = "lib"
+
+        self.executable = os.path.join(output_dir, executable_name)
+
+        compile_command = [
+            "gcc", "-o", self.executable, self.main_file, self.c_source_file,
+            f"-I{json_c_include}", f"-L{json_c_lib}", "-ljson-c"
+        ]
+
+        try:
+            print(f"Running compilation command: {' '.join(compile_command)}")
+            subprocess.run(compile_command, check=True)
+            print(f"Successfully compiled executable: {self.executable}")
+        except subprocess.CalledProcessError as e:
+            raise RuntimeError(f"Compilation of C code failed: {e}")
 
     def process_directory(self, directory: str) -> int:
         """
-        Call the C function to process a directory of TBE files.
+        Run the compiled C executable to process a directory of TBE files.
 
         :param directory: Path to the directory containing TBE files.
-        :return: Exit code from the C function (0 for success, non-zero for errors).
+        :return: Exit code from the C program (0 for success, non-zero for errors).
         """
         if not os.path.isdir(directory):
             raise NotADirectoryError(f"The path '{directory}' is not a valid directory.")
-        result = self.lib.process_tbe_directory(directory.encode('utf-8'))
-        return result
+
+        try:
+            result = subprocess.run(
+                [self.executable, directory],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+            print("Output from C executable:")
+            print(result.stdout)
+            if result.stderr:
+                print("Errors:")
+                print(result.stderr)
+            return result.returncode
+        except Exception as e:
+            raise RuntimeError(f"Error running the C executable: {e}")
 
     def generate_summary(self):
         """
-        Call the C function to generate a metadata summary.
+        Generate a metadata summary by directly calling the C executable's summary function.
         """
-        self.lib.generate_metadata_summary()
-
-    @staticmethod
-    def load_json_summary(json_path: str) -> dict:
-        """
-        Load the generated metadata summary JSON file.
-
-        :param json_path: Path to the JSON file generated by the C library.
-        :return: Parsed JSON data as a dictionary.
-        """
-        if not os.path.exists(json_path):
-            raise FileNotFoundError(f"The JSON file '{json_path}' does not exist.")
-
-        with open(json_path, 'r') as file:
-            data = json.load(file)
-        return data
-
-    @staticmethod
-    def display_visual_summary(summary: dict):
-        """
-        Display the metadata summary in a human-readable visual format.
-
-        :param summary: Parsed JSON summary data.
-        """
-        print("\n===== Metadata Summary =====")
-        print(f"Total files processed: {summary.get('processed_files', 0)}")
-        print(f"Total files skipped: {summary.get('skipped_files', 0)}")
-        print(f"Total files: {summary.get('total_files', 0)}")
-        print(f"Total records: {summary.get('total_records', 0)}")
-        print(f"Average records per file: {summary.get('average_records_per_file', 0.0):.2f}")
-        print("\nProcessed Files:")
-        for file_data in summary.get('files', []):
-            print(f"- {file_data['filename']}: {file_data['records']} records")
-        print("============================")
+        print("\nGenerating metadata summary:")
+        try:
+            result = subprocess.run(
+                [self.executable, "--summary"],
+                stdout=subprocess.PIPE,
+                stderr=subprocess.PIPE,
+                text=True
+            )
+            print(result.stdout)
+            if result.stderr:
+                print("Errors:")
+                print(result.stderr)
+        except Exception as e:
+            raise RuntimeError(f"Error generating summary: {e}")
 
 
 if __name__ == "__main__":
     # Parse command-line arguments
-    if len(sys.argv) < 3:
-        print("Usage: python c_tbe_integration.py <path_to_so_file> <directory_to_process>")
+    if len(sys.argv) < 4:
+        print("Usage: python c_tbe_integration.py <path_to_c_file> <path_to_main_file> <directory_to_process|--summary>")
         sys.exit(1)
 
-    lib_path = sys.argv[1]  # Path to the compiled .so file
-    tbe_directory = sys.argv[2]  # Path to the directory containing TBE files
-    json_path = "metadata_summary.json"  # Path to the metadata summary JSON file
+    c_source_file = sys.argv[1]  # Path to the C source file
+    main_file = sys.argv[2]  # Path to the main C file
 
     try:
-        integration = CTbeIntegration(lib_path)
-        print(f"Processing TBE files in directory: {tbe_directory}")
-        exit_code = integration.process_directory(tbe_directory)
+        integration = CTbeIntegration(c_source_file, main_file)
 
-        if exit_code == 0:
-            print(f"Successfully processed TBE files in directory: {tbe_directory}")
+        if sys.argv[3] == "--summary":
+            # Generate JSON summary file
+            integration.generate_summary()
         else:
-            print(f"Processing TBE files failed with exit code: {exit_code}")
+            # Process files in the directory
+            tbe_directory = sys.argv[3]
+            print(f"Processing TBE files in directory: {tbe_directory}")
+            exit_code = integration.process_directory(tbe_directory)
 
-        print("Generating metadata summary...")
-        integration.generate_summary()
-        print("Metadata summary generation complete.")
-
-        # Load and display the metadata summary
-        summary_data = integration.load_json_summary(json_path)
-        integration.display_visual_summary(summary_data)
+            if exit_code == 0:
+                print(f"Successfully processed TBE files in directory: {tbe_directory}")
+            else:
+                print(f"Processing TBE files failed with exit code: {exit_code}")
 
     except Exception as e:
         print(f"Error: {e}")
