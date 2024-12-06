@@ -29,18 +29,6 @@ Prerequisites
     Python: Python 3.6 or later.
     JSON-C Library: Install the JSON-C library for JSON support in C.
 
-Build the C Shared Library
-
-Run the following command to compile the C code and generate a shared library:
-python3 python/src/functions/c_shared_lib.py
-
-The shared library will be created as:
-
-    macOS: c/src/functions/tbe_batch_processor.so
-    Windows: c/src/functions/tbe_batch_processor.dll
-
-Update the -I and -L paths based on your JSON-C installation if necessary.
-
 Python Integration
 
 Ensure you have the necessary Python environment and dependencies. For this project, no external Python dependencies are required.
@@ -49,10 +37,7 @@ Usage
 Process TBE Files
 
 Run the c_tbe_integration.py script using the generated shared library and the sample data:
-python3 python/src/functions/c_tbe_integration.py c/src/functions/tbe_batch_processor.so ./sample_data
-
-For Windows, replace .so with .dll in the command:
-python python/src/functions/c_tbe_integration.py c/src/functions/tbe_batch_processor.dll ./sample_data
+python3 python/src/functions/c_tbe_integration.py c/src/functions/tbe_batch_processor.c c/src/main.c sample_data
 
 
 Output
