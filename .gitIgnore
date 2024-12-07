@@ -1,1 +1,4 @@
 read_TBE.exe
+
+# Ignore all class files
+*.class
