@@ -27,7 +27,7 @@ npm install
 To start parsing sample TBE files into JavaScript native objects, you can use one of the following commands:
 
 ```bash
-npm start
+npm run start-readTBE
 ```
 or
 
@@ -36,8 +36,13 @@ node src/functions/readTBE
 ```
 
 ## strip_header
+# Steps to run the application.
 
-(Add your content here)
+* Change directory to javascript
+* Run <code>npm install</code>
+* Update the file path in <code>javascript/demo/parse-header.js</code> - line7
+* Run <code>npm run start-stripHeader</code>
+
 
 ## unit_tests
 
