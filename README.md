@@ -36,3 +36,15 @@ define sections and organize data.
 ## Architecture
 Each library is designed to meet the specific needs of its target environment while adhering to a common TBE file standard, enabling 
 consistent cross-platform handling of TBE data.
+
+## Coding Standards
+
+This project uses multiple programming languages. Below are the coding standards for each:
+
+- [C Coding Standards](./C_Coding_Standards.md)
+- [Java Coding Standards](./Java_Coding_Standards.md)
+- [R Coding Standards](./R_Coding_Standards.md)
+- [JavaScript Coding Standards](./JavaScript_Coding_Standards.md)
+- [Python Coding Standards](./Python_Coding_Standards.md)
+- [Ruby Coding Standards](./Ruby_Coding_Standards.md)
+
