@@ -8,7 +8,7 @@ logging.basicConfig(level=logging.INFO, format='%(asctime)s - %(levelname)s - %(
 def export_tbl_data(flin, output_dir, combined_csv=False):
     """
     Export TBL data sections into CSV format.
-    
+
     Parameters:
     - flin: Input TBE file (CSV format)
     - output_dir: Directory where the CSV files will be saved
@@ -25,15 +25,14 @@ def export_tbl_data(flin, output_dir, combined_csv=False):
         # Extract table headers
         tf_codes = tf[0].str[:3]
         tf_description = tf[0].str[4:]
-        
         # Find all TBL sections (where tf_codes == 'TBL')
         itbl_header = tf_codes[tf_codes == 'TBL'].index
         ntables = len(itbl_header)
-        
+
         if ntables == 0:
-            logging.warning("No TBL sections found in the input file.")
+            logging.warning(f"No TBL sections found in the file {flin}.")
             return
-        
+
         # Initialize a dictionary to store data for each table
         result = {}
 
@@ -66,7 +65,7 @@ def export_tbl_data(flin, output_dir, combined_csv=False):
             # Check for missing 'ATT' attributes and log warnings
             if tf_tbl.isnull().any().any():
                 logging.warning(f"Missing values in table {tbl_str}, filling with blank cells.")
-            
+
             result[tbl_str] = tf_tbl
 
             # Export data to individual CSV file per TBL section
@@ -84,15 +83,22 @@ def export_tbl_data(flin, output_dir, combined_csv=False):
     except Exception as e:
         logging.error(f"Error during export: {str(e)}")
 
-
 if __name__ == "__main__":
-    # Define paths and flags
-    input_file = "../../../sample_data/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv"
+    # Define paths
+    input_directory = "../../../sample_data"
     output_directory = './output_csv'
-    
+
     # Ensure output directory exists
     if not os.path.exists(output_directory):
         os.makedirs(output_directory)
-    
-    # Call the function to export TBL data
-    export_tbl_data(input_file, output_directory, combined_csv=True)
+
+    # Process all files in the input directory
+    for filename in os.listdir(input_directory):
+        file_path = os.path.join(input_directory, filename)
+
+        # Check if the file is a valid CSV file
+        if os.path.isfile(file_path) and filename.endswith('.csv'):
+            logging.info(f"Processing file: {file_path}")
+            export_tbl_data(file_path, output_directory, combined_csv=True)
+        else:
+            logging.warning(f"Skipping non-CSV file: {filename}")
