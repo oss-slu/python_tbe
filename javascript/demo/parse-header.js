@@ -1,12 +1,12 @@
-const { extractTbeHeader } = require('../');
+const { stripHeader } = require('../');
 
 /**
  * This file is to test the tbe header parser with validations and header processing
  */
 function demonstrateHeaderParsing() {
-  const filePath = '../sample_data/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv';
+  const filePath = '../sample_data/saq_bluesky_dku_20210715_20230131_inv_tbe.csv';
   console.log(filePath)
-  const result = extractTbeHeader(filePath);
+  const result = stripHeader(filePath);
   
   switch (result.status) {
     case 'success':
