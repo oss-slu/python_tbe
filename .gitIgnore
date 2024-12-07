@@ -2,3 +2,5 @@
 *.class
 node_modules
 read_TBE.exe
+java/Maven/target/
+.vscode/settings.json
