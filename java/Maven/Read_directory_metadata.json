@@ -1,7 +1,7 @@
 [
     {
-        "creation_time": "2024-11-20T15:23:44.2493537Z",
-        "last_modified_time": "2024-11-20T15:23:44.2493537Z",
+        "creation_time": "2024-12-01T22:38:27.2439365Z",
+        "last_modified_time": "2024-12-07T03:51:44.088141Z",
         "sample_data": [
             "BGN,Title,Inventory for bgd",
             ",Source,Duke Bluesky Sensors",
@@ -20,8 +20,8 @@
         "row_count": 87
     },
     {
-        "creation_time": "2024-11-20T15:23:44.2493537Z",
-        "last_modified_time": "2024-11-20T15:23:44.2493537Z",
+        "creation_time": "2024-12-01T22:38:27.2439365Z",
+        "last_modified_time": "2024-12-01T22:38:27.2439365Z",
         "sample_data": [
             "BGN,Title,Inventory for dku",
             ",Source,Duke Bluesky Sensors",
@@ -40,8 +40,8 @@
         "row_count": 90
     },
     {
-        "creation_time": "2024-11-20T15:23:44.2493537Z",
-        "last_modified_time": "2024-11-20T15:23:44.2493537Z",
+        "creation_time": "2024-12-01T22:38:27.2439365Z",
+        "last_modified_time": "2024-12-01T22:38:27.2439365Z",
         "sample_data": [
             "BGN,Title,Inventory for npl",
             ",Source,Duke Bluesky Sensors",

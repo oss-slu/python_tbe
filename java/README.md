@@ -25,6 +25,7 @@ Before you start, ensure that you have the following installed on your system:
 - mvn -version
 
 - Ensure you have correct structure for Maven project and update pom.xml with the file name
+- Navigate to cd java/Maven
 
 ## Compile the code:
 mvn compile
@@ -52,10 +53,10 @@ mvn exec:java
 
 2. **Clone Repository**
    git clone https://github.com/oss-slu/tbe.git
-3. **Run the Read_TBE file**
+3. **Run the ReadTBE file**
    cd java/src/functions
-   javac Read_TBE.java
-   java Read_TBE
+   javac ReadTBE.java
+   java ReadTBE
 
    ** When you run the application the data will get printed**
    )
