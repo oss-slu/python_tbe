@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 
 import org.json.JSONArray;
@@ -31,7 +32,7 @@ public class ReadDirectory {
             // Print the summary to the console
             System.out.println("Metadata Summary: \n" + summary.toString(4));
         } catch (IOException e) {
-            logger.severe("Error while processing files: " + e.getMessage());
+            logger.log(Level.SEVERE, "Error while processing files: {0}", e.getMessage());
         }
     }
 
@@ -52,14 +53,15 @@ public class ReadDirectory {
         Files.list(dirPath).forEach(filePath -> {
             if (Files.isRegularFile(filePath) && filePath.toString().endsWith(".csv")) {
                 try {
-                    logger.info("Processing file: " + filePath.getFileName());
+                    logger.log(Level.INFO, "Processing file: {0}", filePath.getFileName());
                     JSONObject metadata = extractMetadata(filePath.toFile());
                     summary.put(metadata);
-                } catch (Exception e) {
-                    logger.warning("Failed to process file: " + filePath.getFileName() + " - " + e.getMessage());
+                } catch (IOException e) {
+                    logger.log(Level.WARNING, "Failed to process file: {0} - Reason: {1}",
+                            new Object[]{filePath.getFileName(), e.getMessage()});
                 }
             } else if (Files.isRegularFile(filePath)) {
-                logger.warning("Skipping non-TBE file: " + filePath.getFileName());
+                logger.log(Level.WARNING, "Skipping non-TBE file: {0}", filePath.getFileName());
             }
         });
 
@@ -75,34 +77,34 @@ public class ReadDirectory {
      */
     private static JSONObject extractMetadata(File file) throws IOException {
         JSONObject metadata = new JSONObject();
-        
+
         Path filePath = file.toPath();
         BasicFileAttributes attr = Files.readAttributes(filePath, BasicFileAttributes.class);
 
-        metadata.put("file_name", file.getName());  // File name
-        metadata.put("file_size", attr.size());    // File size in bytes
-        metadata.put("creation_time", attr.creationTime().toString());  // File creation time
-        metadata.put("last_modified_time", attr.lastModifiedTime().toString());  // Last modified time
-        
+        metadata.put("file_name", file.getName()); // File name
+        metadata.put("file_size", attr.size()); // File size in bytes
+        metadata.put("creation_time", attr.creationTime().toString()); // File creation time
+        metadata.put("last_modified_time", attr.lastModifiedTime().toString()); // Last modified time
+
         if (file.getName().endsWith(".csv")) {
-        List<String> lines = Files.readAllLines(filePath);
-        metadata.put("row_count", lines.size() - 1);
-        if (!lines.isEmpty()) {
-            String[] columns = lines.get(0).split(",");
-            metadata.put("column_count", columns.length);
-            metadata.put("column_names", new JSONArray(columns));
-            if (lines.size() > 1) {
-                metadata.put("sample_data", new JSONArray(lines.subList(1, Math.min(5, lines.size()))));
+            List<String> lines = Files.readAllLines(filePath);
+            metadata.put("row_count", lines.size() - 1); // Subtract header row
+            if (!lines.isEmpty()) {
+                String[] columns = lines.get(0).split(",");
+                metadata.put("column_count", columns.length);
+                metadata.put("column_names", new JSONArray(columns));
+                if (lines.size() > 1) {
+                    metadata.put("sample_data", new JSONArray(lines.subList(1, Math.min(5, lines.size())))); // First 5 rows
+                }
             }
         }
-    }
         return metadata;
     }
 
     /**
      * Exports the metadata summary to a JSON file.
      *
-     * @param summary      The metadata summary to export.
+     * @param summary        The metadata summary to export.
      * @param outputFilePath The path of the output JSON file.
      * @throws IOException If there is an error writing the file.
      */
@@ -110,6 +112,6 @@ public class ReadDirectory {
         try (FileWriter fileWriter = new FileWriter(outputFilePath)) {
             fileWriter.write(summary.toString(4)); // Pretty print JSON with indentation
         }
-        logger.info("Metadata summary exported to: " + outputFilePath);
+        logger.log(Level.INFO, "Metadata summary exported to: {0}", outputFilePath);
     }
 }
