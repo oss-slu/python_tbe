@@ -22,7 +22,7 @@ To ensure a smooth and collaborative contribution process, please follow these r
 If you encounter a bug or an issue while using, please follow these steps to report it:
 
 1. Check the existing issues in the [issue tracker](https://github.com/oss-slu/tbe/issues) to see if the bug has already been reported.
-2. If the bug hasn't been reported, open a new [issue](https://github.com/oss-slu/tbe/issues/new).
+2. If the bug hasn't been reported, open a new [issue](https://github.com/oss-slu/tbe/issues/new?assignees=&labels=&projects=&template=bug_report.md&title=).
 3. Provide a clear and descriptive title for the issue.
 4. Include steps to reproduce the bug, along with any relevant error messages or screenshots.
 5. Specify the environment (operating system, browser, etc.) where the bug occurs.
@@ -32,7 +32,7 @@ If you encounter a bug or an issue while using, please follow these steps to rep
 If you have an idea for a new feature or enhancement, we encourage you to propose it to the project. Here's how you can do it:
 
 1. Check the existing issues in the [issue tracker](https://github.com/oss-slu/tbe/issues) to see if it already exists. 
-2. Open a new issue [here](https://github.com/oss-slu/tbe/issues/new).
+2. Open a new issue [here](https://github.com/oss-slu/tbe/issues/new?assignees=&labels=&projects=&template=feature_request.md&title=).
 2. Provide a clear and descriptive title for the feature proposal.
 3. Explain the motivation and benefits of the proposed feature.
 4. Describe the proposed solution or implementation, if you have one in mind.
