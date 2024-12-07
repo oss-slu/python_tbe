@@ -8,7 +8,15 @@
 
 ## output_TBE
 
-(Add your content here)
+The main function of src/functions/readTBE.js, parseTBE() returns a JSON object, tables. outputTBE() takes in two parameters, a file path to write to, and a JSON object representing the tbe tables. The function writes the data within the JSON tables object to a .csv file with proper tbe formatting. Simply run ```node outputTBE.js ./path-to-file/output-file-name.csv``` from the directory containing the function (currently /javascript/src/functions).
+
+Following the example usage outlined in the file, the resulting .csv looks like
+TBL Users,Name,Age,Country
+BGN,Alice,25,USA
+Bob,30,Canada
+EOT Charlie,22,UK
+ATT Info,Active,Verified
+CMT Notes,Test User,New
 
 ## read_directory
 

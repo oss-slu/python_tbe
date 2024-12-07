@@ -11,9 +11,32 @@ type Tables = {
     [tableName: string]: TableData
 }
 
+/**
+ * Outputs the TBE format for the given tables and writes it to a specified directory.
+ *
+ * @param directory - The directory where the output file will be written.
+ * @param tables - An object containing table data, attributes, and comments.
+ * @returns A promise that resolves when the file has been written.
+ */
 const outputTBE = async (directory: string, tables: Tables): Promise<void> => {
+    let dataToWrite = ''
     try{
-        const dataToWrite = JSON.stringify(tables)
+        Object.keys(tables).forEach(table => {
+            const headers = Object.keys(tables[table].data[0]).join(',')
+
+            const allRows = tables[table].data.map(row => Object.values(row));
+            const lastRow = allRows.pop()?.join(',')
+            const rowData = allRows.map(row => row.join(',')).join('\n')
+
+            const attData = Object.entries(tables[table].att)
+            .map(([key, values]) => `${key},${values.join(',')}`)
+
+            const cmtData = Object.entries(tables[table].cmt)
+            .map(([key, values]) => `${key},${values.join(',')}`)
+
+            dataToWrite += `TBL ${table},${headers}\nBGN,${rowData}\nEOT ${lastRow}\nATT ${attData}\nCMT ${cmtData}`
+        })
+        
         await writeFile(directory, dataToWrite);
     } catch(err) {
         throw err;
@@ -21,7 +44,6 @@ const outputTBE = async (directory: string, tables: Tables): Promise<void> => {
 };
 
 // example usage
-// run ```node outputTBE.js ./my-custom-directory/output.csv```
 const testDirectory = process.argv[2] || './output.csv'
 
 const exampleTables = {

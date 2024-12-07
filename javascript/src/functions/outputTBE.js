@@ -37,26 +37,52 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var promises_1 = require("fs/promises");
+/**
+ * Outputs the TBE format for the given tables and writes it to a specified directory.
+ *
+ * @param directory - The directory where the output file will be written.
+ * @param tables - An object containing table data, attributes, and comments.
+ * @returns A promise that resolves when the file has been written.
+ */
 var outputTBE = function (directory, tables) { return __awaiter(void 0, void 0, void 0, function () {
     var dataToWrite, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
-                _a.trys.push([0, 2, , 3]);
-                dataToWrite = JSON.stringify(tables);
-                return [4 /*yield*/, (0, promises_1.writeFile)(directory, dataToWrite)];
+                dataToWrite = '';
+                _a.label = 1;
             case 1:
-                _a.sent();
-                return [3 /*break*/, 3];
+                _a.trys.push([1, 3, , 4]);
+                Object.keys(tables).forEach(function (table) {
+                    var _a;
+                    var headers = Object.keys(tables[table].data[0]).join(',');
+                    var allRows = tables[table].data.map(function (row) { return Object.values(row); });
+                    var lastRow = (_a = allRows.pop()) === null || _a === void 0 ? void 0 : _a.join(',');
+                    var rowData = allRows.map(function (row) { return row.join(','); }).join('\n');
+                    var attData = Object.entries(tables[table].att)
+                        .map(function (_a) {
+                        var key = _a[0], values = _a[1];
+                        return "".concat(key, ",").concat(values.join(','));
+                    });
+                    var cmtData = Object.entries(tables[table].cmt)
+                        .map(function (_a) {
+                        var key = _a[0], values = _a[1];
+                        return "".concat(key, ",").concat(values.join(','));
+                    });
+                    dataToWrite += "TBL ".concat(table, ",").concat(headers, "\nBGN,").concat(rowData, "\nEOT ").concat(lastRow, "\nATT ").concat(attData, "\nCMT ").concat(cmtData);
+                });
+                return [4 /*yield*/, (0, promises_1.writeFile)(directory, dataToWrite)];
             case 2:
+                _a.sent();
+                return [3 /*break*/, 4];
+            case 3:
                 err_1 = _a.sent();
                 throw err_1;
-            case 3: return [2 /*return*/];
+            case 4: return [2 /*return*/];
         }
     });
 }); };
 // example usage
-// run ```node outputTBE.js ./my-custom-directory/output.csv```
 var testDirectory = process.argv[2] || './output.csv';
 var exampleTables = {
     "Users": {
