@@ -1,11 +1,12 @@
 {
-    "name": "tbe-header-parser",
+    "name": "javascript",
     "version": "1.0.0",
     "description": "A utility to extract and validate header metadata from TBE files",
     "main": "index.js",
     "type": "commonjs",
     "scripts": {
-      "start": "node demo/parse-header.js",
+      "start-stripHeader": "node demo/parse-header.js",
+      "start-readTBE": "node src/functions/readTBE",
       "test": "jest"
     },
     "author": "",
