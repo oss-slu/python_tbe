@@ -12,7 +12,7 @@
 
 ### Testing
 - Write unit tests using a framework like Jest.
-- Ensure all components are tested independently and as part of the application.
+- Ensure all components/functions are tested independently and as part of the application.
 
 ### Front-End Specific
 - Add CSS for new components in separate `.css` files.
