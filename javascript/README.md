@@ -20,7 +20,14 @@ npm install
 
 ## read_directory
 
-(Add your content here)
+### To Read TBE Files and Out Processed Metadata as JSON:
+1. Place your TBE files in the `sample_data/` directory (or specify a directory path).
+2. Run the `readDirectory.js` script:
+   ```bash
+   node readDirectory.js
+   ```
+
+The script will read all `.tbe` files in the specified directory, extract metadata, and log it in the console as a JSON object.
 
 ## read_TBE
 
