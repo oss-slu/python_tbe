@@ -1,2 +1,4 @@
+# Ignore all class files
+*.class
 node_modules
 read_TBE.exe
