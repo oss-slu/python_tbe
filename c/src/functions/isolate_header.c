@@ -355,3 +355,21 @@ void print_tbe_header(const TBEHeader* header) {
         printf("\n");
     }
 }
+
+int main() {
+    const char* input_path = "sample_data/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv";
+
+    TBEHeader* header = parse_TBE_header(input_path);
+    if (!header) {
+        fprintf(stderr, "Failed to parse TBE header\n");
+        return EXIT_FAILURE;
+    }
+
+    printf("Parsed TBE Header:\n");
+    print_tbe_header(header);
+
+    // Free allocated memory
+    free_tbe_header(header);
+
+    return EXIT_SUCCESS;
+}
