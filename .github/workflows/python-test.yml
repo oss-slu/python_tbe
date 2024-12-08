@@ -31,4 +31,4 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}  
         run: |
-          pytest ./python_tbe/tests/test_tbe_file_operations.py --maxfail=1 --disable-warnings -q
+          pytest ./python_tbe_archive/tests/test_tbe_file_operations.py --maxfail=1 --disable-warnings -q
