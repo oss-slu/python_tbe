@@ -14,6 +14,11 @@ This module parses the TBE file and isolates the header information, including g
 - `free_tbe_header(TBEHeader* header)`: Frees memory allocated for a `TBEHeader` object.
 - `print_tbe_header(const TBEHeader* header)`: Outputs the parsed header structure for debugging purposes.
 
+### Test:
+In the root directory i.e. **tbe**
+Run the command - `` gcc -o main c/src/functions/isolate_header.c ``
+and run - ``./main``
+
 ---
 
 ## output_csv
