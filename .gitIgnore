@@ -1,7 +1,24 @@
 # Ignore all class files
 *.class
+
 node_modules
 read_TBE.exe
 java/Maven/target/
 .vscode/settings.json
 .Rproj.user
+
+# Ignore executable files
+*.exe
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore Python bytecode and cache
+*.pyc
+__pycache__/
+
+# Ignore VS files
+.vs
+
+# Ignore generated CSV files
+c/output_data/*
