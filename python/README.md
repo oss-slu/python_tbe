@@ -92,9 +92,9 @@ Step 4: Check for Output or Logs
 Logging Output: Issues like missing or malformed files are logged in the terminal.
 Metadata Output: A file named read_directory_metadata.json is created in the current directory.
 This file contains metadata for each .csv file processed, including:
-  File size, creation and modification timestamps.
-  Number of rows and columns.
-  Column names and sample data (first five rows).
+1.File size, creation and modification timestamps.
+2.Number of rows and columns.
+3.Column names and sample data (first five rows).
 
 Notes:
 Ensure that the directory you specify contains valid .csv files before running the script.
