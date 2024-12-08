@@ -1,4 +1,5 @@
-import { writeFile } from 'fs/promises';
+import { writeFile, mkdir } from 'fs/promises';
+import path from 'path';
 
 // parseTBE() returns tables object of type Tables
 type TableData = {
@@ -20,6 +21,11 @@ type Tables = {
  */
 const outputTBE = async (directory: string, tables: Tables): Promise<void> => {
     let dataToWrite = ''
+
+    // create the directory in case it does not exist
+    const dir = path.dirname(directory);
+    await mkdir(dir, { recursive: true });
+    
     try{
         Object.keys(tables).forEach(table => {
             const headers = Object.keys(tables[table].data[0]).join(',')
