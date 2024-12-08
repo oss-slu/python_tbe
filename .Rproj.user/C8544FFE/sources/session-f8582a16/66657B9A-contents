@@ -1,0 +1,166 @@
+# Function to parse the TBE header into an R list
+parse_tbe_header <- function(tbe_header) {
+  # Create an empty list to store the parsed TBE metadata
+  metadata <- list()
+  
+  # Extract global metadata (TBL Global)
+  if (!is.null(tbe_header$TBL_Global)) {
+    metadata$global <- list(
+      Title = tbe_header$TBL_Global$Title,
+      Source = tbe_header$TBL_Global$Source,
+      Author = tbe_header$TBL_Global$Author,
+      Date = tbe_header$TBL_Global$Date,
+      Comment = tbe_header$TBL_Global$Comment,
+      InputFile1 = tbe_header$TBL_Global$InputFile1,
+      InputFile1093 = tbe_header$TBL_Global$InputFile1093
+    )
+  } else {
+    warning("TBL Global section missing in header")
+  }
+  
+  # Extract site data (TBL Sites)
+  if (!is.null(tbe_header$TBL_Sites)) {
+    metadata$sites <- lapply(tbe_header$TBL_Sites, function(site) {
+      list(
+        country = site$country,
+        sitename = site$sitename,
+        siteid = site$siteid,
+        serial_number = site$serial_number,
+        plocation = site$plocation,
+        latitude = site$latitude,
+        longitude = site$longitude,
+        is_indoors = site$is_indoors,
+        nmeasurements = site$nmeasurements,
+        nrecords = site$nrecords,
+        date_start = site$date_start,
+        date_end = site$date_end,
+        timezone = site$timezone,
+        utc_offset = site$utc_offset,
+        pm25_calibration = site$pm25_calibration,
+        pm25_scale = site$pm25_scale,
+        pm25_offset = site$pm25_offset
+      )
+    })
+  } else {
+    warning("TBL Sites section missing in header")
+  }
+  
+  # Extract units data (ATT Units)
+  if (!is.null(tbe_header$ATT_Units)) {
+    metadata$units <- lapply(tbe_header$ATT_Units, function(unit) {
+      list(
+        Name = unit$Name,
+        Name_Original = unit$Original_Name_from_Research_Group,
+        Unique_ID = unit$Unique_ID_for_Aqsebs,
+        TSI_Number = unit$TSI_Number,
+        New_Site_Location = unit$New_Site_Location,
+        Number_Of_Original_Data_Points = unit$Number_Of_Original_Data_Points,
+        Number_Of_Records_In_Input_File = unit$Number_Of_Records_In_Input_File
+      )
+    })
+  } else {
+    warning("ATT Units section missing in header")
+  }
+  
+  # Extract display names data (ATT DisplayName)
+  if (!is.null(tbe_header$ATT_DisplayName)) {
+    metadata$display_names <- lapply(tbe_header$ATT_DisplayName, function(display) {
+      list(
+        country = display$country,
+        sitename = display$sitename,
+        siteid = display$siteid,
+        serial_number = display$serial_number,
+        plocation = display$plocation,
+        latitude = display$latitude,
+        longitude = display$longitude,
+        is_indoors = display$is_indoors,
+        nmeasurements = display$nmeasurements,
+        nrecords = display$nrecords,
+        date_start = display$date_start,
+        date_end = display$date_end,
+        timezone = display$timezone,
+        utc_offset = display$utc_offset,
+        pm25_calibration = display$pm25_calibration,
+        pm25_scale = display$pm25_scale,
+        pm25_offset = display$pm25_offset
+      )
+    })
+  } else {
+    warning("ATT DisplayName section missing in header")
+  }
+  
+  # Return the parsed metadata
+  return(metadata)
+}
+
+# Example TBE header input (for demonstration purposes)
+tbe_header <- list(
+  TBL_Global = list(
+    Title = "bsfasad",
+    Source = "afswdw",
+    Author = "afawdasaw",
+    Date = "2/3/2022 0:00",
+    Comment = "asdawfaw",
+    InputFile1 = "sd",
+    InputFile1093 = "afswfawwq"
+  ),
+  TBL_Sites = list(
+    list(
+      country = "BGN",
+      sitename = "SiteA",
+      siteid = "001",
+      serial_number = 12345,
+      plocation = 1,
+      latitude = 42.3601,
+      longitude = -71.0589,
+      is_indoors = TRUE,
+      nmeasurements = 100,
+      nrecords = 500,
+      date_start = "2022-02-01 00:00:00",
+      date_end = "2022-02-28 23:59:59",
+      timezone = "Etc/UTC",
+      utc_offset = 0,
+      pm25_calibration = NA,
+      pm25_scale = NA,
+      pm25_offset = NA
+    )
+  ),
+  ATT_Units = list(
+    list(
+      Name = "Unit1",
+      Original_Name_from_Research_Group = "Unit A",
+      Unique_ID_for_Aqsebs = "12345",
+      TSI_Number = 6789,
+      New_Site_Location = 1,
+      Number_Of_Original_Data_Points = 200,
+      Number_Of_Records_In_Input_File = 500
+    )
+  ),
+  ATT_DisplayName = list(
+    list(
+      country = "BGN",
+      sitename = "SiteA",
+      siteid = "001",
+      serial_number = 12345,
+      plocation = 1,
+      latitude = 42.3601,
+      longitude = -71.0589,
+      is_indoors = TRUE,
+      nmeasurements = 100,
+      nrecords = 500,
+      date_start = "2022-02-01 00:00:00",
+      date_end = "2022-02-28 23:59:59",
+      timezone = "Etc/UTC",
+      utc_offset = 0,
+      pm25_calibration = NA,
+      pm25_scale = NA,
+      pm25_offset = NA
+    )
+  )
+)
+
+# Example of how to call the function
+metadata_parsed <- parse_tbe_header(tbe_header)
+
+# View the output structure
+str(metadata_parsed)

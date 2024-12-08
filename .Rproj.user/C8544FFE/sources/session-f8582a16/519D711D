@@ -1,0 +1,24 @@
+{
+    "id": "519D711D",
+    "path": "~/tbe/sample_data/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv",
+    "project_path": "sample_data/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv",
+    "type": "text",
+    "hash": "3429564494",
+    "contents": "",
+    "dirty": false,
+    "created": 1733012972661.0,
+    "source_on_save": false,
+    "relative_order": 2,
+    "properties": {
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 1733009874,
+    "encoding": "UTF-8",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1733009874,
+    "read_only": false,
+    "read_only_alternatives": []
+}

@@ -1,0 +1,28 @@
+{
+    "id": "F34ED9AC",
+    "path": null,
+    "project_path": null,
+    "type": "object_explorer",
+    "hash": "0",
+    "contents": "",
+    "dirty": false,
+    "created": 1733091608878.0,
+    "source_on_save": false,
+    "relative_order": 3,
+    "properties": {
+        "id": "26a666b4a9ad424db8b50d287830cce9",
+        "name": "tbe_header",
+        "title": "tbe_header",
+        "language": "R",
+        "source_window_id": "",
+        "Source": "Source"
+    },
+    "folds": "",
+    "lastKnownWriteTime": 3486175764798398765,
+    "encoding": "",
+    "collab_server": "",
+    "source_window": "",
+    "last_content_update": 1733091608878,
+    "read_only": false,
+    "read_only_alternatives": []
+}
