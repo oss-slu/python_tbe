@@ -3,7 +3,6 @@
 #include <string.h>
 
 // Function prototypes
-static void add_attribute(Attribute** head, const char* name, const char* value);
 static void trim_newline(char* str);
 static void strip_quotes(char* str);
 static int split_csv_line(const char* line, char* tokens[], int max_tokens);
@@ -19,7 +18,7 @@ static void strip_quotes(char* str) {
 }
 
 // Helper function to add an attribute to a linked list
-static void add_attribute(Attribute** head, const char* name, const char* value) {
+void add_attribute(Attribute** head, const char* name, const char* value) {
     Attribute* new_attr = malloc(sizeof(Attribute));
     if (!new_attr) {
         perror("Memory allocation failed for Attribute");
