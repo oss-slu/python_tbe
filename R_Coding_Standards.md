@@ -18,3 +18,4 @@
 ### Testing
 - Use `testthat` for unit testing.
 - Ensure coverage of edge cases in statistical calculations.
+- Ensure to follow the respective library's README file to verify correct testing commands and functionality.
