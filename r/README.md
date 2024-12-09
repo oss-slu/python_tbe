@@ -38,6 +38,18 @@ Before you start, ensure that you have the following installed on your system:
 
 ## strip_header
 
+## Overview
+The strip_header function in R extracts metadata (the header section), and returns it in a JSON format.
+
+## Prerequisites
+To use this function, Install R studio on your device.
+
+## Running the code
+Select all the code in Strip_header.r and run (ctrl+enter)
+
+## Output
+The script will run on all files in sample data and output will be displayed in json format.
+
 (Add your content here)
 
 ## unit_tests
