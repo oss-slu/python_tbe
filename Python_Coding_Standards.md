@@ -13,6 +13,7 @@
 ### Testing
 - Use `pytest` for testing, and ensure tests cover both typical and edge cases.
 - Use mocks for external API calls or dependencies.
+- Ensure to follow the respective library's README file to verify correct testing commands and functionality.
 
 ### Additional Guidelines
 - Type annotate function arguments and return values.
