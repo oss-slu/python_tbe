@@ -17,3 +17,4 @@
 - Write unit tests for each function using a testing framework like CUnit.
 - Use tools such as `Valgrind` to check for memory leaks.
 - Check for `NULL` pointers before dereferencing.
+- Ensure to follow the respective library's README file to verify correct testing commands and functionality.
