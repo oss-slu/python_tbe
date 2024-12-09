@@ -18,6 +18,7 @@ Avoid unnecessary use of unsafe blocks unless required and well-documented.
 - Group related tests within mod tests blocks.
 - Use assert!, assert_eq!, and assert_ne! for test assertions.
 - For expected failures, use the #[should_panic] attribute with a specific panic message.
+- Ensure to follow the respective library's README file to verify correct testing commands and functionality.
 
 ### Additional Guidelines
 - Prefer using Result and Option types for error handling instead of panicking.
