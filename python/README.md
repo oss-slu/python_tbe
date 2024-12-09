@@ -85,6 +85,9 @@ cd tbe/python/src/functions
 Step 3: Run the Code
 In the terminal, change the current directory to the location of the read_directory.py file:
 cd tbe/python/src/functions
+
+Update the paths in read_directory.py for the sample_data
+
 Run the code using Python:
 python read_directory.py
 
