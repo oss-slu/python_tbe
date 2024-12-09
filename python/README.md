@@ -8,17 +8,18 @@ The functionality of output_csv allows exporting TBL data sections into a CSV fo
 
 Prerequisites:
 Dependencies:
+
 1. Python: Version 3.8 or later is required.
-Install Python from the official Python website(https://www.python.org/downloads/).
-Verify installation by running python --version in the terminal.
+   Install Python from the official Python website(https://www.python.org/downloads/).
+   Verify installation by running python --version in the terminal.
 
 2. Required Python Packages:
-pandas: For handling tabular data and exporting it to CSV.
-logging: Built-in Python library used for logging warnings and information.
+   pandas: For handling tabular data and exporting it to CSV.
+   logging: Built-in Python library used for logging warnings and information.
 
 3. Git: Required to clone the repository.
-Install Git from the Git website.
-Verify installation by running git --version.
+   Install Git from the Git website.
+   Verify installation by running git --version.
 
 Setup Instructions:
 Step 1: Install Python and Required Libraries
@@ -50,7 +51,22 @@ For further customization or troubleshooting, review the code comments within ou
 
 ## output_TBE
 
-(Add your content here)
+The output_TBE.py script is designed to export Python-native data structures into the TBE file format. It ensures the output adheres to the TBE standard, maintaining data integrity and structure. This functionality allows seamless reading, modification, and saving of data without any loss or structural changes, making it suitable for workflows that require consistent and reliable TBE file handling.
+
+# Installation
+
+1. Clone the repository.
+2. Ensure Python 3.6 or later is installed on your system.
+3. Navigate to the python/src/functions directory and open the output_TBE.py file.
+
+# Usage
+
+1. Place your input file (file.csv) in the sample data/ directory.
+2. Update the file_path in output_tbe_file.py to point to the input file:
+   file_path = '../../../sample_data/file.csv'
+3. Run the script:
+   <code>python3 output_tbe_file.py</code>
+   The processed file will be saved in the same directory as output_tbe_file.py as output_tbe_file.csv.
 
 ## read_directory
 
@@ -58,17 +74,18 @@ The read_directory functionality scans a specified directory for .csv files and 
 
 Prerequisites:
 Dependencies:
+
 1. Python: Version 3.8 or later is required.
-Install Python from the official Python website(https://www.python.org/downloads/).
-Verify installation by running python --version in the terminal.
+   Install Python from the official Python website(https://www.python.org/downloads/).
+   Verify installation by running python --version in the terminal.
 
 2. Required Python Packages:
-pandas: For handling tabular data and exporting it to CSV.
-logging: Built-in Python library used for logging warnings and information.
+   pandas: For handling tabular data and exporting it to CSV.
+   logging: Built-in Python library used for logging warnings and information.
 
 3. Git: Required to clone the repository.
-Install Git from the Git website.
-Verify installation by running git --version.
+   Install Git from the Git website.
+   Verify installation by running git --version.
 
 Setup Instructions:
 Step 1: Install Python and Required Libraries
