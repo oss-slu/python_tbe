@@ -1,6 +1,36 @@
 ## isolate_header
 
-(Add your content here)
+This Python script extracts and processes the header from a TBE (Tabular-Based Encoding) file. It stores the metadata in a Python-native dictionary structure and logs the extraction process for missing fields, unexpected formats, or errors.
+
+## Features
+- Parses TBE headers and stores metadata in a dictionary.
+- Retains the hierarchical structure of TBE metadata, with nested tables and attributes.
+- Logs warnings for missing or malformed fields without interrupting the process.
+- Handles unexpected formats, empty sections, and duplicate attributes.
+
+## Requirements
+- Python 3.x
+- `logging` (standard library)
+- `csv` (standard library)
+
+## Setup
+
+1. Clone this repository or download the Python script to your local machine.
+   
+2. Ensure you have Python 3.x installed. You can check this by running:
+   ```bash
+   python --version
+
+3. In the terminal, change the current location to the directory where the isolate_header.py file exists:
+cd tbe/python/src/functions
+Run the code using Python:
+python isolate_header.py
+
+### Notes:
+- **Purpose**: Clearly states that the script processes the header from a TBE file and logs metadata.
+- **Requirements**: Specifies the Python version and libraries required.
+- **Usage**: Provides instructions for running the script and configuring the file path.
+- **Customization**: Explains how to customize the file path and logging behavior.
 
 ## output_csv
 
