@@ -37,6 +37,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 var promises_1 = require("fs/promises");
+var path = require("path");
 /**
  * Outputs the TBE format for the given tables and writes it to a specified directory.
  *
@@ -45,20 +46,24 @@ var promises_1 = require("fs/promises");
  * @returns A promise that resolves when the file has been written.
  */
 var outputTBE = function (directory, tables) { return __awaiter(void 0, void 0, void 0, function () {
-    var dataToWrite, err_1;
+    var dataToWrite, dir, err_1;
     return __generator(this, function (_a) {
         switch (_a.label) {
             case 0:
                 dataToWrite = '';
-                _a.label = 1;
+                dir = path.dirname(directory);
+                return [4 /*yield*/, (0, promises_1.mkdir)(dir, { recursive: true })];
             case 1:
-                _a.trys.push([1, 3, , 4]);
+                _a.sent();
+                _a.label = 2;
+            case 2:
+                _a.trys.push([2, 4, , 5]);
                 Object.keys(tables).forEach(function (table) {
                     var _a;
                     var headers = Object.keys(tables[table].data[0]).join(',');
                     var allRows = tables[table].data.map(function (row) { return Object.values(row); });
                     var lastRow = (_a = allRows.pop()) === null || _a === void 0 ? void 0 : _a.join(',');
-                    var rowData = allRows.map(function (row) { return row.join(','); }).join('\n');
+                    var rowData = allRows.map(function (row) { return ',' + row.join(','); }).join('\n');
                     var attData = Object.entries(tables[table].att)
                         .map(function (_a) {
                         var key = _a[0], values = _a[1];
@@ -69,31 +74,54 @@ var outputTBE = function (directory, tables) { return __awaiter(void 0, void 0, 
                         var key = _a[0], values = _a[1];
                         return "".concat(key, ",").concat(values.join(','));
                     });
-                    dataToWrite += "TBL ".concat(table, ",").concat(headers, "\nBGN,").concat(rowData, "\nEOT ").concat(lastRow, "\nATT ").concat(attData, "\nCMT ").concat(cmtData);
+                    dataToWrite += "TBL ".concat(table, ",").concat(headers, "\nBGN").concat(rowData, "\nEOT ").concat(table, ",").concat(lastRow, "\n");
+                    if (attData.length > 0) {
+                        dataToWrite += "ATT ".concat(attData, "\n");
+                    }
+                    if (cmtData.length > 0) {
+                        dataToWrite += "CMT ".concat(cmtData, "\n");
+                    }
+                    dataToWrite += ',,,\n';
                 });
                 return [4 /*yield*/, (0, promises_1.writeFile)(directory, dataToWrite)];
-            case 2:
-                _a.sent();
-                return [3 /*break*/, 4];
             case 3:
+                _a.sent();
+                return [3 /*break*/, 5];
+            case 4:
                 err_1 = _a.sent();
                 throw err_1;
-            case 4: return [2 /*return*/];
+            case 5: return [2 /*return*/];
         }
     });
 }); };
 // example usage
 var testDirectory = process.argv[2] || './output.csv';
-var exampleTables = {
-    "Users": {
-        "data": [
-            { "Name": "Alice", "Age": "25", "Country": "USA" },
-            { "Name": "Bob", "Age": "30", "Country": "Canada" },
-            { "Name": "Charlie", "Age": "22", "Country": "UK" }
-        ],
-        "att": { "Info": ["Active", "Verified"] },
-        "cmt": { "Notes": ["Test User", "New"] }
-    }
-};
-outputTBE(testDirectory, exampleTables);
+// const exampleTables = {
+//     "Users": {
+//         "data": [
+//             { "Name": "Alice", "Age": "25", "Country": "USA" },
+//             { "Name": "Bob", "Age": "30", "Country": "Canada" },
+//             { "Name": "Charlie", "Age": "22", "Country": "UK" }
+//         ],
+//         "att": { "Info": ["Active", "Verified"] },
+//         "cmt": { "Notes": ["Test User", "New"] }
+//     }
+// }
+// outputTBE(testDirectory, exampleTables)
+// example using real sample_data from '/sample_data'
+// sampleData is the stringified object returned by parseTBE()
+var main = function () { return __awaiter(void 0, void 0, void 0, function () {
+    var sampleData, sampleDataJSON;
+    return __generator(this, function (_a) {
+        switch (_a.label) {
+            case 0: return [4 /*yield*/, (0, promises_1.readFile)('./src/functions/sampleDataJSON.txt', 'utf-8')];
+            case 1:
+                sampleData = _a.sent();
+                sampleDataJSON = JSON.parse(sampleData);
+                outputTBE(testDirectory, sampleDataJSON);
+                return [2 /*return*/];
+        }
+    });
+}); };
+main();
 exports.default = outputTBE;
