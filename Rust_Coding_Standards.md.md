@@ -1,7 +1,7 @@
-# Ruby Coding Standards
+# Rust Coding Standards
 
 ### General Best Practices
-- Follow the [Rust API Guidelines](https://rubystyle.guide/).
+- Follow the [Rust API Guidelines](https://doc.rust-lang.org/nightly/style-guide/).
 - Use descriptive function, variable, and type names to improve code readability.
 -Leverage Rust's ownership model effectively, ensuring proper use of borrowing and lifetimes.
 Avoid unnecessary use of unsafe blocks unless required and well-documented.
