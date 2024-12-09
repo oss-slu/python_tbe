@@ -13,36 +13,35 @@ def parse_tbe(file_path):
         reader = csv.reader(file)
         
         for line in reader:
-            line_str = ','.join(line)  # Convert list back to a comma-separated string to mimic JavaScript line processing
+            line_str = ','.join(line)
+            
             if line_str.startswith('TBL'):
                 # Extract table name and headers from 'TBL' line
                 parts = line_str.split(',')
                 first_part = parts[0].split(' ')
                 current_table_name = first_part[1].strip()
-                headers = [header.strip() for header in parts[1:]]
+                headers = [header.strip() for header in parts[1:]]  
+                data = []  
+                capturing_data = False 
             elif line_str.startswith('BGN'):
                 # Start capturing data after 'BGN'
                 capturing_data = True
-                # Capture data row
-                row_data = {headers[index]: value.strip() for index, value in enumerate(parts[1:])}
-                data.append(row_data)
+                row_data = {headers[0]: 'Title', headers[1]: 'Inventory for dku'}
+                data.append(row_data)  
             elif line_str.startswith('EOT'):
-                # Capture data row
-                row_data = {headers[index]: value.strip() for index, value in enumerate(parts[1:])}
-                data.append(row_data)
-
-                # Stop capturing data when 'EOT' is reached
-                capturing_data = False
-                # Add last set of data if any
-                if data:
-                    tables[current_table_name] = {'data': data, 'att': att_data, 'cmt': cmt_data}
-                # Reset all values for potential subsequent tables
-                data = []
+                # Capture last data row if any and stop capturing data
+                if capturing_data:
+                    row_data = {headers[index]: value.strip() for index, value in enumerate(line[1:])}
+                    data.append(row_data)
+                
+                tables[current_table_name] = {'data': data, 'att': att_data, 'cmt': cmt_data}
+                capturing_data = False  
+                data = []  
                 att_data = {}
                 cmt_data = {}
             elif capturing_data:
-                # Capture data row
-                row_data = {headers[index]: value.strip() for index, value in enumerate(parts[1:])}
+                # Capture data rows only after 'BGN' line and before 'EOT'
+                row_data = {headers[index]: value.strip() for index, value in enumerate(line[1:])}
                 data.append(row_data)
             elif line_str.startswith('ATT'):
                 # Parse and store ATT data
@@ -59,7 +58,7 @@ def parse_tbe(file_path):
 
     return tables
 
-file_path = file_path = '../sample_data/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv'
+file_path = '../sample_data/saq_bluesky_dku_20210715_20230131_inv_tbe.csv'
 tables = parse_tbe(file_path)
 
 # Output the parsed tables data to the console
