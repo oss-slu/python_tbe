@@ -1,12 +1,18 @@
 {
-  "name": "javascript",
-  "version": "1.0.0",
-  "description": "(Add your content here)",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
-  "keywords": [],
-  "author": "",
-  "license": "ISC"
+    "name": "javascript",
+    "version": "1.0.0",
+    "description": "A utility to extract and validate header metadata from TBE files",
+    "main": "index.js",
+    "type": "commonjs",
+    "scripts": {
+      "start-stripHeader": "node demo/parse-header.js",
+      "start-readTBE": "node src/functions/readTBE",
+      "test": "jest"
+    },
+    "author": "",
+    "license": "MIT",
+    "dependencies": {},
+    "devDependencies": {
+      "jest": "^29.7.0"
+    }
 }
