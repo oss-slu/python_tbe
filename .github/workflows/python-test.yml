@@ -31,4 +31,4 @@ jobs:
         env:
           PYTHONPATH: ${{ github.workspace }}  
         run: |
-          pytest ./python/tests/test_tbe_file_operations.py 
+          pytest ./python/src/tests/test_tbe_file_operations.py 
