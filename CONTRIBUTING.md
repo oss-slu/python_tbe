@@ -16,6 +16,7 @@ To ensure a smooth and collaborative contribution process, please follow these r
 8. Be open to feedback and suggestions from maintainers and other contributors.
 9. Do not include any sensitive, confidential, or proprietary information in your contributions.
 10. By submitting a contribution, you agree to license your work under the project's chosen license.
+11. All contributions are made under the [MIT license](https://github.com/oss-slu/tbe/blob/main/LICENSE.MD)
 
 ## Raising Bugs
 
