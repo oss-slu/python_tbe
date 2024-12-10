@@ -65,8 +65,8 @@ The output_TBE.py script is designed to export Python-native data structures int
 2. Update the file_path in output_tbe_file.py to point to the input file:
    file_path = '../../../sample_data/file.csv'
 3. Run the script:
-   <code>python3 output_tbe_file.py</code>
-   The processed file will be saved in the same directory as output_tbe_file.py as output_tbe_file.csv.
+   <code>python3 output_TBE.py</code>
+   The processed file will be saved in the same directory as output_TBE.py as output_tbe_file.csv.
 
 ## read_directory
 
