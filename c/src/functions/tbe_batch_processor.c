@@ -76,26 +76,6 @@ void process_tbe_directory(const char* dirpath) {
     if (aggregate.processed_files > 0) {
         printf("Average records per file: %.2f\n", (double)aggregate.total_records / aggregate.processed_files);
     }
-
-    // Generate metadata summary JSON file
-    FILE* json_file = fopen("metadata_summary.json", "w");
-    if (json_file) {
-        fprintf(json_file, "{\n");
-        fprintf(json_file, "  \"processed_files\": %d,\n", aggregate.processed_files);
-        fprintf(json_file, "  \"skipped_files\": %d,\n", aggregate.skipped_files);
-        fprintf(json_file, "  \"total_files\": %d,\n", aggregate.total_files);
-        fprintf(json_file, "  \"total_records\": %d,\n", aggregate.total_records);
-        if (aggregate.processed_files > 0) {
-            fprintf(json_file, "  \"average_records_per_file\": %.2f\n", (double)aggregate.total_records / aggregate.processed_files);
-        } else {
-            fprintf(json_file, "  \"average_records_per_file\": 0.00\n");
-        }
-        fprintf(json_file, "}\n");
-        fclose(json_file);
-        printf("\nMetadata summary written to metadata_summary.json\n");
-    } else {
-        printf("\nError: Could not write metadata summary to file.\n");
-    }
 }
 
 // Function to generate metadata summary
