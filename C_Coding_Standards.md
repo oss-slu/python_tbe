@@ -3,7 +3,7 @@
 ### General Best Practices
 - Ensure all functions have a clear description of their purpose and parameter details.
 - Include header guards in all `.h` files to prevent multiple inclusions.
-- Limit the use of global variables; prefer `static` variables for internal module use.
+- Limit the use of global variables, prefer `static` variables for internal module use.
 - Maintain a soft limit of 100 characters per line for readability.
 - Comment complex logic and non-intuitive code using `/* */` format.
 
