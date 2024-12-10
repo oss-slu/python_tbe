@@ -30,8 +30,58 @@ and run - ``./main``
 (Add your content here)
 
 ## read_directory
+TBE Batch Processor
 
-(Add your content here)
+This project provides functionality for processing TBE files in batch mode using a combination of C and Python. It parses TBE files from a specified directory, aggregates metadata, generates summaries, and outputs the results in both text and JSON formats.
+
+Features
+
+    Batch Processing: Processes all TBE files in a specified directory.
+    Metadata Aggregation: Aggregates metadata such as the total number of files, processed files, skipped files, and record counts.
+    text Summary: Outputs a metadata summary in a metadata_summary.json file.
+    Integration with Python: Uses Python to call the C-based processor for ease of testing and integration.
+
+Installation and Setup
+Prerequisites
+    Python: Python 3.6 or later.
+
+Python Integration
+
+Ensure you have the necessary Python environment and dependencies. For this project, no external Python dependencies are required.
+
+Usage
+Process TBE Files
+
+Run the c_tbe_integration.py script using the generated shared library and the sample data:
+python3 c/src/functions/c_tbe_integration.py sample_data
+
+
+Output
+
+    Console Output: Logs for processed files, skipped files, and a summary of results.
+    JSON Output: A metadata_summary.json file containing the aggregated metadata.
+
+
+
+Header file for the C implementation, defining metadata structures and function declarations.
+
+Python script to integrate with the C shared library and provide a user-friendly interface for processing.
+1. sample_data/
+
+Directory containing sample TBE files for testing.
+5. .gitignore
+
+Ensures generated files (e.g., tbe_batch_processor.so) are excluded from version control.
+6. metadata_summary.json
+
+text file generated as output, containing aggregated metadata from processed TBE files.
+
+Contributions
+
+For future contributions:
+
+    Follow the structure and naming conventions.
+    Update this README with details of added functionality.
 
 ## read_TBE
 
@@ -77,3 +127,5 @@ and run - ``./main``
 ## validate_TBE
 
 (Add your content here)
+
+For queries, feel free to contact the repository maintainer.
