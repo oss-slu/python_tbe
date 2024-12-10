@@ -9,7 +9,7 @@
 
 ### Code Formatting
 - Indent with tabs (4 spaces equivalent).
-- Place the opening brace `{` on the same line as the statement (Allman style).
+- Place the opening brace `{` on the new line as the statement (Allman style).
 - Use descriptive names for variables and functions, avoiding abbreviations.
 - Declare variables at the beginning of blocks.
 
