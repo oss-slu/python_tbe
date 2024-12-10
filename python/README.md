@@ -1,6 +1,30 @@
 ## isolate_header
 
-(Add your content here)
+This module parses the TBE file and isolates the header information, including global metadata (BGN and EOT attributes) and TBL sections.
+
+### Features:
+- **BGN Attributes**: Extracts metadata from the "BGN" section, storing key-value pairs.
+- **TBL Sections**: Extracts attributes from each "TBL" section, associating them with the corresponding section name.
+- **EOT Attributes**: Extracts metadata from the "EOT" section, similar to BGN.
+- **Error Handling**: Handles empty lines, malformed entries, and unknown line types gracefully.
+- **Utilities**: Includes helper functions for stripping quotes, splitting CSV lines, and trimming newline characters.
+
+### Functions:
+- `parse_tbe_header(filename: str) -> dict`: Parses a TBE file and returns a dictionary containing the parsed header information.
+
+## Setup
+
+1. Clone this repository or download the Python script to your local machine.
+   
+2. Ensure you have Python 3.x installed. You can check this by running:
+   ```bash
+   python --version
+
+3. In the terminal, change the current location to the directory where the isolate_header.py file exists:
+cd tbe/python/src/functions
+Run the code using Python:
+python python/src/functions/isolate_header.py sample_data/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv
+
 
 ## output_csv
 
