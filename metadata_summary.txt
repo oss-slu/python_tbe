@@ -1,0 +1,6 @@
+Summary:
+Processed files: 3
+Skipped files: 0
+Total files: 3
+Total records: 335
+Average records per file: 111.67
