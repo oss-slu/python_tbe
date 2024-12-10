@@ -1,7 +1,9 @@
 import pytest
 import os
 import pandas as pd
-from python_tbe_archive.python_conv.ebs_read_tbe import ebs_read_tbe
+import csv
+from python.src.functions.ebs_read_tbe import ebs_read_tbe
+
 
 def test_read_tbe_file_valid():
     """Test reading valid TBE files in the sample_data directory."""
@@ -136,3 +138,94 @@ def test_automated_testing_setup():
     """Test for automated setup, ensuring that all tests run successfully."""
     assert True  # A simple test that always passes to ensure setup is correct
 
+# def parse_tbe(file_path):
+#     """Parses a TBE file into a structured dictionary of tables."""
+#     tables = {}
+#     current_table_name = ''
+#     capturing_data = False
+#     headers = []
+#     data = []
+#     att_data = {}
+#     cmt_data = {}
+
+#     with open(file_path, 'r') as file:
+#         reader = csv.reader(file)
+        
+#         for line in reader:
+#             line_str = ','.join(line)
+            
+#             if line_str.startswith('TBL'):
+#                 parts = line_str.split(',')
+#                 first_part = parts[0].split(' ')
+#                 current_table_name = first_part[1].strip()
+#                 headers = [header.strip() for header in parts[1:]]  
+#                 data = []  
+#                 capturing_data = False 
+#             elif line_str.startswith('BGN'):
+#                 capturing_data = True
+#                 row_data = {headers[0]: 'Title', headers[1]: 'Inventory for dku'}
+#                 data.append(row_data)  
+#             elif line_str.startswith('EOT'):
+#                 if capturing_data:
+#                     row_data = {headers[index]: value.strip() for index, value in enumerate(line[1:])}
+#                     data.append(row_data)
+                
+#                 tables[current_table_name] = {'data': data, 'att': att_data, 'cmt': cmt_data}
+#                 capturing_data = False  
+#                 data = []  
+#                 att_data = {}
+#                 cmt_data = {}
+#             elif capturing_data:
+#                 row_data = {headers[index]: value.strip() for index, value in enumerate(line[1:])}
+#                 data.append(row_data)
+#             elif line_str.startswith('ATT'):
+#                 parts = line_str.split(',')
+#                 att_type = parts[0].split(' ')[1]
+#                 att_values = [value.strip() for value in parts[1:]]
+#                 att_data[att_type] = att_values
+#             elif line_str.startswith('CMT'):
+#                 parts = line_str.split(',')
+#                 cmt_type = parts[0].split(' ')[1]
+#                 cmt_values = [value.strip() for value in parts[1:]]
+#                 cmt_data[cmt_type] = cmt_values
+
+#     return tables
+
+
+# def test_read_tbe_file_valid():
+#     """Test parsing and validating TBE files in the sample_data directory."""
+#     input_dir = './sample_data'
+#     assert os.path.exists(input_dir), f"Input directory '{input_dir}' does not exist."
+    
+#     for file in os.listdir(input_dir):
+#         if file.endswith('.csv'):
+#             file_path = os.path.join(input_dir, file)
+#             print(f"Testing file: {file_path}")
+            
+#             try:
+#                 # Parse the TBE file
+#                 tables = parse_tbe(file_path)
+                
+#                 assert isinstance(tables, dict), f"Output is not a dictionary for file: {file_path}"
+#                 assert len(tables) > 0, f"No tables found in file: {file_path}"
+                
+#                 for table_name, table_data in tables.items():
+#                     assert 'data' in table_data, f"Data missing for table {table_name} in file: {file_path}"
+#                     assert 'att' in table_data, f"ATT data missing for table {table_name} in file: {file_path}"
+#                     assert 'cmt' in table_data, f"CMT data missing for table {table_name} in file: {file_path}"
+                    
+#                     # Validate 'data' content
+#                     assert isinstance(table_data['data'], list), f"Data is not a list for table {table_name} in file: {file_path}"
+#                     if table_data['data']:
+#                         assert isinstance(table_data['data'][0], dict), f"Data row is not a dictionary for table {table_name} in file: {file_path}"
+                    
+#                     # Validate 'att' content
+#                     assert isinstance(table_data['att'], dict), f"ATT data is not a dictionary for table {table_name} in file: {file_path}"
+                    
+#                     # Validate 'cmt' content
+#                     assert isinstance(table_data['cmt'], dict), f"CMT data is not a dictionary for table {table_name} in file: {file_path}"
+                    
+#             except csv.Error as e:
+#                 pytest.fail(f"CSV error while parsing file {file_path}: {e}")
+#             except Exception as e:
+#                 pytest.fail(f"Unexpected error while parsing file {file_path}: {e}")
