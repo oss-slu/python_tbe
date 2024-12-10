@@ -8,7 +8,7 @@
 
 ### Code Formatting
 - Use 4 spaces for indentation (no tabs).
-- Use camelCase for variables and functions; PascalCase for classes.
+- Use camelCase for variables and functions,` PascalCase for classes.
 - End all statements with a semicolon (`;`).
 - Ensure braces {} are used even for single-line conditionals to avoid ambiguity.
 - Maintain proper spacing around operators and between blocks of code to improve readability.
