@@ -1,17 +1,16 @@
 ## isolate_header
 
-This Python script extracts and processes the header from a TBE (Tabular-Based Encoding) file. It stores the metadata in a Python-native dictionary structure and logs the extraction process for missing fields, unexpected formats, or errors.
+This module parses the TBE file and isolates the header information, including global metadata (BGN and EOT attributes) and TBL sections.
 
-## Features
-- Parses TBE headers and stores metadata in a dictionary.
-- Retains the hierarchical structure of TBE metadata, with nested tables and attributes.
-- Logs warnings for missing or malformed fields without interrupting the process.
-- Handles unexpected formats, empty sections, and duplicate attributes.
+### Features:
+- **BGN Attributes**: Extracts metadata from the "BGN" section, storing key-value pairs.
+- **TBL Sections**: Extracts attributes from each "TBL" section, associating them with the corresponding section name.
+- **EOT Attributes**: Extracts metadata from the "EOT" section, similar to BGN.
+- **Error Handling**: Handles empty lines, malformed entries, and unknown line types gracefully.
+- **Utilities**: Includes helper functions for stripping quotes, splitting CSV lines, and trimming newline characters.
 
-## Requirements
-- Python 3.x
-- `logging` (standard library)
-- `csv` (standard library)
+### Functions:
+- `parse_tbe_header(filename: str) -> dict`: Parses a TBE file and returns a dictionary containing the parsed header information.
 
 ## Setup
 
@@ -24,13 +23,8 @@ This Python script extracts and processes the header from a TBE (Tabular-Based E
 3. In the terminal, change the current location to the directory where the isolate_header.py file exists:
 cd tbe/python/src/functions
 Run the code using Python:
-python isolate_header.py
+python python/src/functions/isolate_header.py sample_data/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv
 
-### Notes:
-- **Purpose**: Clearly states that the script processes the header from a TBE file and logs metadata.
-- **Requirements**: Specifies the Python version and libraries required.
-- **Usage**: Provides instructions for running the script and configuring the file path.
-- **Customization**: Explains how to customize the file path and logging behavior.
 
 ## output_csv
 
