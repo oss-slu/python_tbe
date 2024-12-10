@@ -4,8 +4,9 @@
 - Adhere to the [Google Java Style Guide](https://google.github.io/styleguide/javaguide.html).
 - Include Javadoc comments for all public classes and methods.
 - Ensure methods are focused on a single task to improve testability.
-- Soft limit of 100 characters per line.
-
+- Soft limit of 100 characters per line, with exceptions for long URLs, import statements, or method signatures that improve clarity.
+- Aim for 80% test coverage. Ensure all critical code paths are covered.
+  
 ### Code Formatting
 - Use 4 spaces for indentation (no tabs).
 - Use camelCase for variables and methods, and PascalCase for classes.
