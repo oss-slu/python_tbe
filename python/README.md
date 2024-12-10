@@ -82,7 +82,8 @@ This file provides a Python script to extract global metadata from a TBE-style C
 (Add your content here)
 
 ### Note on Test File Operations
-In the test_tbe_file_operations.py, the first part of the code, which includes the function def test_read_tbe_file_valid():, can be removed later if needed. Additionally, the files ebs_read_tbe.py and bdf_utils.py can also be removed if required.
+In the test_tbe_file_operations.py, the first part of the code, which includes the function def test_read_tbe_file_valid():, can be removed later if needed. Additionally, the files ebs_read_tbe.py and bdf_utils.py can also be removed if required. These files are copies of the original files.
+
 
 #### File Origin Information
 ###### Current Files:
@@ -92,7 +93,6 @@ python/src/functions/bdf_utils.py
 ###### Original Source Files:
 python_tbe_archive/python_conv/ebs_read_tbe.py
 python_tbe_archive/python_conv/bdf_utils.py
-These files are copies of the original files.
 
 #### Testing for read_TBE.py
 The testing for python/src/functions/read_TBE.py is commented out in the test_tbe_file_operations.py file to avoid merge conflicts during development.
