@@ -1,3 +1,4 @@
+
 # TBE Specific ignores
 Bangladesh_level1/
 Dku_bluesky_analysis/
@@ -169,3 +170,27 @@ cython_debug/
 Dockerfile
 *.tar
 *.tar.gz
+# Ignore all class files
+*.class
+
+node_modules
+read_TBE.exe
+java/Maven/target/
+.vscode/settings.json
+.Rproj.user
+
+# Ignore executable files
+*.exe
+
+# Ignore macOS system files
+.DS_Store
+
+# Ignore Python bytecode and cache
+*.pyc
+__pycache__/
+
+# Ignore VS files
+.vs
+
+# Ignore generated CSV files
+c/output_data/*
