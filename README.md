@@ -8,9 +8,9 @@ data-driven projects.
 ## Sample Data Files
 This repository includes the following TBE sample data files:
 
-- **saq_bluesky_bgd_20211001_20230430_inv_tbe.csv** - Contains inventory data for Bluesky BGD covering the period from October 1, 2021, to April 30, 2023.
-- **saq_bluesky_dku_20210715_20230131_inv_tbe.csv** - Contains inventory data for Bluesky DKU from July 15, 2021, to January 31, 2023.
-- **saq_bluesky_npl_20220830_20230404_inv_tbe.csv** - Contains inventory data for Bluesky NPL from August 30, 2022, to April 4, 2023.
+- **[saq_bluesky_bgd_20211001_20230430_inv_tbe.csv](/sample_data/saq_bluesky_bgd_20211001_20230430_inv_tbe.csv)** - Contains inventory data for Bluesky BGD covering the period from October 1, 2021, to April 30, 2023.
+- **[saq_bluesky_dku_20210715_20230131_inv_tbe.csv](/sample_data/saq_bluesky_dku_20210715_20230131_inv_tbe.csv)** - Contains inventory data for Bluesky DKU from July 15, 2021, to January 31, 2023.
+- **[saq_bluesky_npl_20220830_20230404_inv_tbe.csv](/sample_data/saq_bluesky_npl_20220830_20230404_inv_tbe.csv)** - Contains inventory data for Bluesky NPL from August 30, 2022, to April 4, 2023.
 
 These files are used as sample data to demonstrate the TBE file structure and test the TBE Processing Suite functionalities.
 
@@ -41,10 +41,10 @@ consistent cross-platform handling of TBE data.
 
 This project uses multiple programming languages. Below are the coding standards for each:
 
-- [C Coding Standards](./C_Coding_Standards.md)
-- [Java Coding Standards](./Java_Coding_Standards.md)
-- [R Coding Standards](./R_Coding_Standards.md)
-- [JavaScript Coding Standards](./JavaScript_Coding_Standards.md)
-- [Python Coding Standards](./Python_Coding_Standards.md)
-- [Ruby Coding Standards](./Ruby_Coding_Standards.md)
+- [C Coding Standards](.github/CODING%20STANDARDS/C_Coding_Standards.md)
+- [Java Coding Standards](/.github/CODING%20STANDARDS/Java_Coding_Standards.md)
+- [R Coding Standards](/.github/CODING%20STANDARDS/R_Coding_Standards.md)
+- [JavaScript Coding Standards](/.github/CODING%20STANDARDS/JavaScript_Coding_Standards.md)
+- [Python Coding Standards](/.github/CODING%20STANDARDS/Python_Coding_Standards.md)
+- [Rust Coding Standards](/.github/CODING%20STANDARDS/Rust_Coding_Standards.md)
 
