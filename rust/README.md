@@ -40,9 +40,10 @@
         ├── src/
         │   └── main.rs
 6. Ensure you've the necessary dependencies in Cargo.toml
-7. Run the project from the rust/ directory using - cargo run
-8. When you run it'll build the project - Cargo.lock and target/ directory
-9. If you already have Cargo.lock and no target/ dir then use " cargo build " to build the project
+7. Change the path to your sample_data/example.csv as required
+8. Run the project from the rust/ directory using - cargo run
+9. When you run it'll build the project - Cargo.lock and target/ directory
+10. If you already have Cargo.lock and no target/ dir then use " cargo build " to build the project
 
 
 
